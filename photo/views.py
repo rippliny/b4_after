@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from PIL import Image
-from pprint import pprint
+from PIL.ExifTags import TAGS
 from PIL.ExifTags import TAGS
 
 # Create your views here.
@@ -16,7 +16,7 @@ def get_photo_info() :
         decoded = TAGS.get(tag, tag)
         taglabel[decoded] = value
 
-        print(taglabel)
+        pprint(taglabel)
 
         # print(taglabel['DateTimeOriginal']) #촬영 시각
         # print(taglabel['Make'], taglabel['Model']) # 카메라 기종
