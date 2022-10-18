@@ -6,7 +6,7 @@ class PhotoModel(models.Model):
     class Meta:
         db_table = "photo"
     
-    user_id = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+    user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
     img = models.ImageField(upload_to='photo/', null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

@@ -1,7 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from PIL import Image
 from PIL.ExifTags import TAGS
-
+from models import PhotoModel
 # Create your views here.
 
 def get_photo_info() :
