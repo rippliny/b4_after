@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from PIL import Image
 from PIL.ExifTags import TAGS
-from PIL.ExifTags import TAGS
 
 # Create your views here.
 
