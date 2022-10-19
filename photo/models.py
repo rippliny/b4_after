@@ -1,18 +1,17 @@
 from django.db import models
 from user.models import UserModel
 
-
 class PhotoModel(models.Model):
     class Meta:
         db_table = "photo"
-        
+    
     user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
-    imgfile = models.ImageField(upload_to='photo/', null=True, blank=True)
+    img = models.ImageField(upload_to='photo/', null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    favorites = models.ManyToManyField(UserModel, related_name='favorites' ,blank=True)
+    trash = models.ManyToManyField(UserModel, related_name='trash' ,blank=True)
+    category = models.CharField(max_length=16, null=True, default='')
 
-class CategoryModel(models.Model):
-    class Meta:
-        db_table = 'category'
-
-    image = models.ForeignKey(PhotoModel, on_delete=models.CASCADE)
-    name = models.CharField(max_length=24, null=True)
-
+    def __str__(self):
+        return 'id : {}'.format(self.id)

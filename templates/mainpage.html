@@ -6,12 +6,12 @@
 
 
 {% block content %}
-{% for photo in photoes %}
+
 <div>
     <div>
         <a href="/photo/{{ photo.id }}">
             <span id="bookmark_{{ photo.id }}" photo_id="{{ photo.id }}" class="material-icons-outlined">
-                {% if photo.is_marked %}
+                {% if photo.favorit %}
                 bookmark
                 {% else %}
                 bookmark_border
@@ -23,7 +23,7 @@
     <div>
         <a href="/photo/{{ photo.id }}">
             <span id="trash_{{ photo.id }}" photo_id="{{ photo.id }}" class="material-icons-outlined">
-                {% if photo.is_trash %}
+                {% if photo.trash %}
                 trash
                 {% else %}
                 trash_border
@@ -32,5 +32,5 @@
         </a>
     </div>
 </div>
-{% endfor %}
+
 {% endblock %}

@@ -1,9 +1,12 @@
+from django.conf import settings
+from django.conf.urls.static import static
 from django.urls import path
-from photo import views
+from . import views
 
 app_name = 'photo'
 urlpatterns = [
-    path('upload/', views.fileUpload, name='upload'),
-    # path('photo/', views.upload_image),
-    path('category/', views.main_cateory),
+    path('upload/', views.upload, name='upload'),
+    path('category/', views.category, name='category'),
+    path('favorites/', views.favorites, name='favorites'),
+    path('trash/', views.trash, name='trash'),
 ]

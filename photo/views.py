@@ -1,26 +1,19 @@
 from django.shortcuts import render, redirect
 from PIL import Image
 from PIL.ExifTags import TAGS
-from .models import PhotoModel, CategoryModel
+from .models import PhotoModel
 from .forms import ImageUpload
-from .category import get_category
+from .od import classification
+from django.contrib.auth.decorators import login_required
 
-def fileUpload(request):
+def upload(request):
     if request.method == 'POST':
         photo = PhotoModel()
         user = request.user
-
         photo.user = user
-        photo.imgfile = request.FILES["imgfile"]
+        photo.img = request.FILES["img"]
+        photo.category = classification(photo.img)[1]
         photo.save()
-        
-        upload_image = PhotoModel.objects.filter().last()
-        get_category(upload_image)
-        print(upload_image)
-        
-        category = CategoryModel()
-
-        category.save()
         
         return redirect('/upload')
     
@@ -30,14 +23,6 @@ def fileUpload(request):
             'imageupload': imageupload,
         }
         return render(request, 'upload.html', context)
-
-
-def main_cateory(request):
-    if request.method == 'GET':
-        category_name = CategoryModel.objects.get(category_name=category_name)
-        
-        return render(request, 'base.html', {'category_name':category_name})
-
 
 def get_photo_info() :
         image = Image.open(" ") #이미지 파일 경로 또는 주소 입력
@@ -85,41 +70,70 @@ def get_photo_info() :
         if exifGPS[3] == 'W': Lon = Lon * -1
 
         print(Lat, ",", Lon)
-
-def bookmark(request):
-    photo_id = request.data.get('photo_id', None)
-    bookmark_text = request.data.get('bookmark_text', True)
+        
+# 카테고리
+@login_required
+def category(request):
+    photo = PhotoModel()
+    category =  photo.category = classification(photo.img)[1]
+    people = category['person']
+    animuals = ['bird', 'cat', 'dog', 'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe', 'backpack', 'umbrella', 'handbag', 'tie', 'suitcase', 'frisbee']
+    foods = ['banana', 'apple', 'sandwich', 'orange', 'broccoli', 'carrot', 'hot dog', 'pizza', 'donut', 'cake']
+    traffic = ['bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train', 'truck', 'boat', 'traffic light', 'fire hydrant', 'stop sign', 'parking meter', 'bench']
+    things = ['chair', 'couch', 'skis', 'snowboard', 'sports ball', 'kite', 'baseball bat', 'baseball glove', 'skateboard', 'surfboard', 'tennis racket', 
+                'bottle', 'wine glass', 'cup', 'fork', 'knife', 'spoon', 'bowl', 'potted plant', 'bed', 'dining table', 'toilet', 'tv', 'laptop', 'mouse', 'remote', 'keyboard', 'cell phone', 'microwave', 'oven', 'toaster', 'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear', 'hair drier', 'toothbrush']
     
-    if bookmark_text == 'bookmark_border':
-        is_marked = True
+    return render(request, 'category.html')
+
+
+# 즐겨찾기
+@login_required
+def favorites(request):
+    photo_id = request.data.get('photo_id', None)
+    favorites_text = request.data.get('favorites_text', True)
+    
+    if favorites_text == 'favorites_border':
+        favorit = True
+        
     else:
-        is_marked = False
+        favorit = False
         
     email = request.session.get('email', None)
-    bookmark = Bookmark.objects.filter(photo_id=photo_id, email=email).first()
+    favorites = PhotoModel.objects.filter(photo_id=photo_id, email=email).first()
     
-    if bookmark:
-        bookmark.is_marked = is_marked
-        bookmark.save()
+    if favorites:
+        favorites.favorites = favorit
+        favorites.save()
+        
     else:
-        Bookmark.objects.create(photo_id=photo_id, is_marked=is_marked, email=email)
-    return
+        PhotoModel.objects.create(photo_id=photo_id, favorit=favorit, email=email)
+        
+    return redirect('favorit/')
 
+# 휴지동
+@login_required
 def trash(request):
     photo_id = request.data.get('photo_id', None)
     trash_text = request.data.get('trash_text', True)
 
     if trash_text == 'trash_border':
-        is_marked = True
+        trash = True
     else:
-        is_marked = False
+        trash = False
         
     email = request.session.get('email', None)
-    trash = Trash.objects.filter(photo_id=photo_id, email=email).first()
+    trashes = PhotoModel.objects.filter(photo_id=photo_id, email=email).first()
     
-    if trash:
-        trash.is_marked = is_marked
-        trash.save()
+    if trashes:
+        trashes.trash = trash
+        trashes.save()
     else:
-        Trash.objects.create(photo_id=photo_id, is_marked=is_marked, email=email)
-    return 
+        PhotoModel.objects.create(photo_id=photo_id, trash=trash, email=email)
+        
+    return redirect('trash/')
+
+# 휴지통 삭제
+def trash_delete(request, id):
+    feed = PhotoModel.objects.get(id=id)
+    feed.delete()
+    return redirect('trash/')
