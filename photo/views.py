@@ -1,26 +1,35 @@
 from django.shortcuts import render, redirect
 from .forms import ImageUpload
+from django.http import JsonResponse
 from PIL import Image
 from PIL.ExifTags import TAGS
 from .models import PhotoModel
+from od import classification
+from django.contrib.auth.decorators import login_required
 
 
-def fileUpload(request):
+@login_required
+def category(request):
+    return render(request, 'category.html')
+
+
+def upload(request):
     if request.method == 'POST':
         photo = PhotoModel()
         user = request.user
-
         photo.user = user
-        photo.imgfile = request.FILES["imgfile"]
+        photo.img = request.FILES["img"]
+        photo.category = classification(photo.img)[1]
         photo.save()
+        return redirect('/')
 
-        return redirect('/upload')
     else:
         imageupload = ImageUpload
         context = {
             'imageupload': imageupload,
         }
         return render(request, 'upload.html', context)
+
 
 
 def get_photo_info() :
