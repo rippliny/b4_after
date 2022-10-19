@@ -1,10 +1,9 @@
 from django.shortcuts import render, redirect
-from .forms import ImageUpload
 from PIL import Image
 from PIL.ExifTags import TAGS
-from .models import PhotoModel
-from user.models import UserModel
-
+from .models import PhotoModel, CategoryModel
+from .forms import ImageUpload
+from .category import get_category
 
 def fileUpload(request):
     if request.method == 'POST':
@@ -14,14 +13,30 @@ def fileUpload(request):
         photo.user = user
         photo.imgfile = request.FILES["imgfile"]
         photo.save()
+        
+        upload_image = PhotoModel.objects.filter().last()
+        get_category(upload_image)
+        print(upload_image)
+        
+        category = CategoryModel()
 
+        category.save()
+        
         return redirect('/upload')
+    
     else:
         imageupload = ImageUpload
         context = {
             'imageupload': imageupload,
         }
         return render(request, 'upload.html', context)
+
+
+def main_cateory(request):
+    if request.method == 'GET':
+        category_name = CategoryModel.objects.get(category_name=category_name)
+        
+        return render(request, 'base.html', {'category_name':category_name})
 
 
 def get_photo_info() :
@@ -70,3 +85,41 @@ def get_photo_info() :
         if exifGPS[3] == 'W': Lon = Lon * -1
 
         print(Lat, ",", Lon)
+
+def bookmark(request):
+    photo_id = request.data.get('photo_id', None)
+    bookmark_text = request.data.get('bookmark_text', True)
+    
+    if bookmark_text == 'bookmark_border':
+        is_marked = True
+    else:
+        is_marked = False
+        
+    email = request.session.get('email', None)
+    bookmark = Bookmark.objects.filter(photo_id=photo_id, email=email).first()
+    
+    if bookmark:
+        bookmark.is_marked = is_marked
+        bookmark.save()
+    else:
+        Bookmark.objects.create(photo_id=photo_id, is_marked=is_marked, email=email)
+    return
+
+def trash(request):
+    photo_id = request.data.get('photo_id', None)
+    trash_text = request.data.get('trash_text', True)
+
+    if trash_text == 'trash_border':
+        is_marked = True
+    else:
+        is_marked = False
+        
+    email = request.session.get('email', None)
+    trash = Trash.objects.filter(photo_id=photo_id, email=email).first()
+    
+    if trash:
+        trash.is_marked = is_marked
+        trash.save()
+    else:
+        Trash.objects.create(photo_id=photo_id, is_marked=is_marked, email=email)
+    return 
