@@ -9,4 +9,4 @@ urlpatterns = [
     path('category/', views.category, name='category'),
     path('favorites/', views.favorites, name='favorites'),
     path('trash/', views.trash, name='trash'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

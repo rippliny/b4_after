@@ -5,6 +5,7 @@ from .models import PhotoModel
 from .forms import ImageUpload
 from .od import classification
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 
 def upload(request):
     if request.method == 'POST':
@@ -13,10 +14,11 @@ def upload(request):
         photo.user = user
         photo.img = request.FILES["img"]
         photo.category = classification(photo.img)[1]
-        photo.save()
         
-        return redirect('/upload')
+        photo.save()
     
+        return redirect('/upload')
+
     else:
         imageupload = ImageUpload
         context = {
