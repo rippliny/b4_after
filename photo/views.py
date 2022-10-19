@@ -1,9 +1,16 @@
 from django.shortcuts import render, redirect
 from .forms import ImageUpload
+from django.http import JsonResponse
 from PIL import Image
 from PIL.ExifTags import TAGS
 from .models import PhotoModel
+from django.contrib.auth.decorators import login_required
 from .od import classification
+
+
+@login_required
+def category(request):
+    return render(request, 'category.html')
 
 
 def upload(request):
@@ -11,20 +18,23 @@ def upload(request):
         photo = PhotoModel()
         user = request.user
         photo.user = user
-        photo.img = request.FILES['img']
+        photo.img = request.FILES["img"]
+
         photo.save()
         
         photo.category = classification(photo.img)[1]
         
         photo.save()
         
-        return redirect('/upload')
+        return redirect('/')
+
     else:
         imageupload = ImageUpload
         context = {
             'imageupload': imageupload,
         }
         return render(request, 'upload.html', context)
+
 
 
 def get_photo_info() :
