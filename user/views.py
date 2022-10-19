@@ -5,8 +5,14 @@ from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 
 
+def main(request):
+    user = request.user.is_authenticated
+    if user:
+        return render(request, 'mainpage.html')
+    else:
+        return redirect('/sign-in')
 
-# Create your views here.
+
 def sign_up_view(request):
     if request.method == 'GET':
         user = request.user.is_authenticated # 인증된 사용자를 user에 저장한다.
@@ -36,7 +42,6 @@ def sign_up_view(request):
 
 
 def sign_in_view(request):
-
     if request.method == 'POST':
         username = request.POST.get('username', '')
         password = request.POST.get('password', '')
