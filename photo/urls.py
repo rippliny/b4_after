@@ -1,6 +1,7 @@
-from django.conf import settings
-from django.conf.urls.static import static
+from django.urls import path
+from photo import views
 
+app_name = 'photo'
 urlpatterns = [
-    ...
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('upload/', views.fileUpload, name='upload'),
+]
