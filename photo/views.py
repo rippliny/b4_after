@@ -3,7 +3,7 @@ from .forms import ImageUpload
 from PIL import Image
 from PIL.ExifTags import TAGS
 from .models import PhotoModel
-from od import classification
+from .od import classification
 
 
 def upload(request):
@@ -11,8 +11,11 @@ def upload(request):
         photo = PhotoModel()
         user = request.user
         photo.user = user
-        photo.img = request.FILES["img"]
+        photo.img = request.FILES['img']
+        photo.save()
+        
         photo.category = classification(photo.img)[1]
+        
         photo.save()
         
         return redirect('/upload')
@@ -26,7 +29,7 @@ def upload(request):
 
 def get_photo_info() :
         image = Image.open(" ") #이미지 파일 경로 또는 주소 입력
-        info = image._getexif();
+        info = image._getexif()
         image.close()
 
         taglabel = {}

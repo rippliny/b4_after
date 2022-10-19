@@ -9,7 +9,7 @@
     <div>
         <form method="post" action="{% url 'photo:upload' %}" enctype="multipart/form-data">
             {% csrf_token %}
-            <input type="file" name="imgfile">
+            <input type="file" name="img">
             <input type="submit" value="업로드">
         </form>
     </div>
