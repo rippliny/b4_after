@@ -4,6 +4,12 @@ from PIL import Image
 from PIL.ExifTags import TAGS
 from .models import PhotoModel
 from od import classification
+from django.contrib.auth.decorators import login_required
+
+
+@login_required
+def category(request):
+    return render(request, 'category.html')
 
 
 def upload(request):
