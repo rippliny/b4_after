@@ -1,30 +1,33 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    로그인
+로그인
 {% endblock %}
+
+
 {% block content %}
 
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Google Form</title>
-        <link rel="stylesheet" href="google.css">
-    </head>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
-    
-    
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Form</title>
+    <link rel="stylesheet" href="google.css">
+</head>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+
+
     body {
         margin: 0;
         padding: 0;
         background-size: cover;
         font-family: 'Open Sans', sans-serif;
     }
-    
+
     .box {
         position: absolute;
         top: 50%;
@@ -36,9 +39,9 @@
         border: 1px solid #dadce0;
         -webkit-border-radius: 8px;
         border-radius: 8px;
-        
+
     }
-    
+
     .box h2 {
         margin: 0px 0 -0.125rem;
         padding: 0;
@@ -47,16 +50,15 @@
         font-size: 24px;
         font-weight: 400;
     }
-    
-    .box .logo 
-    {
+
+    .box .logo {
         display: flex;
         flex-direction: row;
         justify-content: center;
         margin-bottom: 16px;
-        
+
     }
-    
+
     .box p {
         font-size: 16px;
         font-weight: 400;
@@ -65,11 +67,11 @@
         margin-bottom: 24px;
         text-align: center;
     }
-    
+
     .box .inputBox {
         position: relative;
     }
-    
+
     .box .inputBox input {
         width: 93%;
         padding: 1.3rem 10px;
@@ -80,7 +82,7 @@
         background: transparent;
         border-radius: 4px;
     }
-    
+
     .box .inputBox label {
         position: absolute;
         top: 0;
@@ -91,10 +93,10 @@
         pointer-events: none;
         transition: 0.5s;
     }
-    
-    .box .inputBox input:focus ~ label,
-    .box .inputBox input:valid ~ label,
-    .box .inputBox input:not([value=""]) ~ label {
+
+    .box .inputBox input:focus~label,
+    .box .inputBox input:valid~label,
+    .box .inputBox input:not([value=""])~label {
         top: -1.125rem;
         left: 10px;
         color: #1a73e8;
@@ -104,12 +106,12 @@
         padding-left: 5px;
         padding-right: 5px;
     }
-    
+
     .box .inputBox input:focus {
         outline: none;
         border: 2px solid #1a73e8;
     }
-    
+
     .box input[type="submit"] {
         border: none;
         outline: none;
@@ -121,39 +123,41 @@
         font-size: 1rem;
         float: right;
     }
-        
+
     .box input[type="submit"]:hover {
         background-color: #287ae6;
-        box-shadow: 0 1px 1px 0 rgba(66,133,244,0.45), 0 1px 3px 1px rgba(66,133,244,0.3);
+        box-shadow: 0 1px 1px 0 rgba(66, 133, 244, 0.45), 0 1px 3px 1px rgba(66, 133, 244, 0.3);
     }
-    
+</style>
 
+<body>
 
-    </style>
-    <body>
-    
-        <div class="box">
-            <div class="logo">
-                <h1><span style=color:blue>B</span><span style=color:red>4</span><span style=color:orange> A</span><span style=color:blue>f</span><span style=color:green>t</span><span style=color:red>e</span><span style=color:orange>r</span></h1>
-            </div>
+    <div class="box">
+        <div class="logo">
+            <h1><span style=color:blue>B</span><span style=color:red>4</span><span style=color:orange> A</span><span
+                    style=color:blue>f</span><span style=color:green>t</span><span style=color:red>e</span><span
+                    style=color:orange>r</span></h1>
+        </div>
         <h2>Sign In</h2>
         <p></p>
         <p>Use your Google Account</p>
-            <form class="form-area" method="post" action="/sign-in/">
-                {% csrf_token %}
-                <div class="inputBox">
-                <input type="text" name="username" required onkeyup="this.setAttribute('value', this.value);"  value="">
+        <form class="form-area" method="post" action="/sign-in/">
+            {% csrf_token %}
+            <div class="inputBox">
+                <input type="text" name="username" required onkeyup="this.setAttribute('value', this.value);" value="">
                 <label>Username</label>
-                </div>
-                <div class="inputBox">
-                    <input type="text" name="password" required onkeyup="this.setAttribute('value', this.value);" value="">
-                    <label>Password</label>
-                </div>
-                <a href="/sign-up">계정 만들기</a><button style="float:right" type="submit" class="btn btn-primary btn-lg btn-block">로그인</button>
+            </div>
+            <div class="inputBox">
+                <input type="password" name="password" required onkeyup="this.setAttribute('value', this.value);" value="">
+                <label>Password</label>
+            </div>
+            <a href="/sign-up">계정 만들기</a><button style="float:right" type="submit"
+                class="btn btn-primary btn-lg btn-block">로그인</button>
 
-            </form>
-        </div>
-        
-    </body>
-    </html>
+        </form>
+    </div>
+
+</body>
+
+</html>
 {% endblock %}

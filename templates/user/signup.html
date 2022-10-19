@@ -1,103 +1,110 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    회원가입
+회원가입
 {% endblock %}
+
+
 {% block content %}
 
-    <!DOCTYPE html>
-    <html lang="ko">
+<!DOCTYPE html>
+<html lang="en">
 
-    <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>회원가입</title>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>회원가입</title>
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <style>
-        .input-form {
-        max-width: 680px;
+  <style>
+    .input-form {
+      max-width: 680px;
 
-        margin-top: 80px;
-        padding: 32px;
+      margin-top: 80px;
+      padding: 32px;
 
-        background: #fff;
-        -webkit-border-radius: 10px;
-        -moz-border-radius: 10px;
-        border-radius: 10px;
-        -webkit-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
-        -moz-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
-        box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15)
-        } 
-    </style>
-    </head>
+      background: #fff;
+      -webkit-border-radius: 10px;
+      -moz-border-radius: 10px;
+      border-radius: 10px;
+      -webkit-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+      -moz-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+      box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15)
+    }
+  </style>
+</head>
 
-    <body>
-    <div class="container">
-        <div class="input-form-backgroud row">
-        <div class="input-form col-md-12 mx-auto">
-            <h4 class="mb-3"><span style=color:blue>B</span><span style=color:red>4</span><span style=color:orange> A</span><span style=color:blue>f</span><span style=color:green>t</span><span style=color:red>e</span><span style=color:orange>r</span> 계정 만들기</h4>
-            <form class="form-area" method="post" action="/sign-up/" novalidate>
-            {% csrf_token %}
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                <label for="first_name">성</label>
-                <input type="text" class="form-control" id="first_name" name="first_name" placeholder="" value="" required>
-                <div class="invalid-feedback">
-                    성을 입력해주세요.
-                </div>
-                </div>
-                <div class="col-md-6 mb-3">
-                <label for="last_name">이름</label>
-                <input type="text" class="form-control" id="last_name" name="last_name" placeholder="" value="" required>
-                <div class="invalid-feedback">
-                    별명을 입력해주세요.
-                </div>
-                </div>
+<body>
+  <div class="container">
+    <div class="input-form-backgroud row">
+      <div class="input-form col-md-12 mx-auto">
+        <h4 class="mb-3"><span style=color:blue>B</span><span style=color:red>4</span><span style=color:orange>
+            A</span><span style=color:blue>f</span><span style=color:green>t</span><span style=color:red>e</span><span
+            style=color:orange>r</span> 계정 만들기</h4>
+        <form class="form-area" method="post" action="/sign-up/" novalidate>
+          {% csrf_token %}
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="first_name">성</label>
+              <input type="text" class="form-control" id="first_name" name="first_name" placeholder="" value=""
+                required>
+              <div class="invalid-feedback">
+                성을 입력해주세요.
+              </div>
             </div>
-
-            <div class="mb-3">
-                <label for="username">이메일</label>
-                <input type="text" class="form-control" id="username" name="username" placeholder="" value="" required>
-                <div class="invalid-feedback">
-                이메일을 입력해주세요.
-                </div>
+            <div class="col-md-6 mb-3">
+              <label for="last_name">이름</label>
+              <input type="text" class="form-control" id="last_name" name="last_name" placeholder="" value="" required>
+              <div class="invalid-feedback">
+                별명을 입력해주세요.
+              </div>
             </div>
+          </div>
 
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                <label for="password">비밀번호</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="" value="" required>
-                <div class="invalid-feedback">
-                    비밀번호 입력해주세요.
-                </div>
-                </div>
-                <div class="col-md-6 mb-3">
-                <label for="password2">비밀번호 확인</label>
-                <input type="password" class="form-control" id="password2" name="password2" placeholder="" value="" required>
-                <div class="invalid-feedback">
-                    비밀번호 확인을 입력해주세요.
-                </div>
-                </div>
+          <div class="mb-3">
+            <label for="username">이메일</label>
+            <input type="text" class="form-control" id="username" name="username" placeholder="" value="" required>
+            <div class="invalid-feedback">
+              이메일을 입력해주세요.
             </div>
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="aggrement" required>
-                <label class="custom-control-label" for="aggrement">비밀번호 표시</label>
-                
+          </div>
 
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="password">비밀번호</label>
+              <input type="password" class="form-control" id="password" name="password" placeholder="" value=""
+                required>
+              <div class="invalid-feedback">
+                비밀번호 입력해주세요.
+              </div>
             </div>
-
-            <hr class="mb-4">
-            
-            <div style="float: right">
-              <button type="submit" class="btn btn-primary">회원가입</button>
+            <div class="col-md-6 mb-3">
+              <label for="password2">비밀번호 확인</label>
+              <input type="password" class="form-control" id="password2" name="password2" placeholder="" value=""
+                required>
+              <div class="invalid-feedback">
+                비밀번호 확인을 입력해주세요.
+              </div>
             </div>
+          </div>
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="aggrement" required>
+            <label class="custom-control-label" for="aggrement">비밀번호 표시</label>
 
-            <a href="/sign-in">로그인하기</a> 
+
+          </div>
+
+          <hr class="mb-4">
+
+          <div style="float: right">
+            <button type="submit" class="btn btn-primary">회원가입</button>
+          </div>
+
+          <a href="/sign-in">로그인하기</a>
         </form>
       </div>
     </div>
