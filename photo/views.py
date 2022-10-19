@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from PIL import Image
 from PIL.ExifTags import TAGS
 from .models import PhotoModel
-from od import classification
+from .od import classification
 from django.contrib.auth.decorators import login_required
 
 
@@ -13,14 +13,16 @@ def category(request):
     return render(request, 'category.html')
 
 
-def upload(request):
+def fileUpload(request):
     if request.method == 'POST':
         photo = PhotoModel()
         user = request.user
+
         photo.user = user
-        photo.img = request.FILES["img"]
+        photo.imgfile = request.FILES["imgfile"]
         photo.category = classification(photo.img)[1]
         photo.save()
+
         return redirect('/')
 
     else:
@@ -29,7 +31,6 @@ def upload(request):
             'imageupload': imageupload,
         }
         return render(request, 'upload.html', context)
-
 
 
 def get_photo_info() :
