@@ -3,6 +3,7 @@ from .forms import ImageUpload
 from PIL import Image
 from PIL.ExifTags import TAGS
 from .models import PhotoModel
+from user.models import UserModel
 
 
 def fileUpload(request):
@@ -25,7 +26,7 @@ def fileUpload(request):
 
 def get_photo_info() :
         image = Image.open(" ") #이미지 파일 경로 또는 주소 입력
-        info = image._getexif();
+        info = image._getexif()
         image.close()
 
         taglabel = {}
