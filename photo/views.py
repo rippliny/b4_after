@@ -3,6 +3,12 @@ from .forms import ImageUpload
 from PIL import Image
 from PIL.ExifTags import TAGS
 from .models import PhotoModel
+from django.contrib.auth.decorators import login_required
+
+
+@login_required
+def category(request):
+    return render(request, 'category.html')
 
 
 def fileUpload(request):
