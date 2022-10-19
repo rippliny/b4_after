@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from .od import classification
 
 
+
 @login_required
 def category(request):
     return render(request, 'category.html')
