@@ -4,8 +4,9 @@ from django.http import JsonResponse
 from PIL import Image
 from PIL.ExifTags import TAGS
 from .models import PhotoModel
-from od import classification
 from django.contrib.auth.decorators import login_required
+from .od import classification
+
 
 
 @login_required
@@ -19,8 +20,13 @@ def upload(request):
         user = request.user
         photo.user = user
         photo.img = request.FILES["img"]
-        photo.category = classification(photo.img)[1]
+
         photo.save()
+        
+        photo.category = classification(photo.img)[1]
+        
+        photo.save()
+        
         return redirect('/')
 
     else:
@@ -34,7 +40,7 @@ def upload(request):
 
 def get_photo_info() :
         image = Image.open(" ") #이미지 파일 경로 또는 주소 입력
-        info = image._getexif();
+        info = image._getexif()
         image.close()
 
         taglabel = {}
