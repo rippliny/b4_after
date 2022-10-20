@@ -8,7 +8,6 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 
 
-
 @login_required
 def category(request):
     return render(request, 'category.html')
@@ -22,10 +21,11 @@ def fileUpload(request):
 
         photo.user = user
         photo.img = request.FILES["img"]
+        photo.save()
         photo.category = classification(photo.img)[1]
         photo.save()
     
-        return redirect('/upload')
+        return redirect('/')
 
     else:
         imageupload = ImageUpload
@@ -35,50 +35,16 @@ def fileUpload(request):
         return render(request, 'upload.html', context)
 
 
-def img_info(request, id):
-    if request.method == 'GET':
-        photo = PhotoModel.objects.get(id=id)
-        image = PhotoModel.objects.all()
-        context = {
-            'photo' : photo,
-            'img' : image,
-            'id' : id,
-        }
-    return render(request, 'img_info.html', context)
-
-
 @login_required
 def delete(request, photo_id):
-    if request.method == 'POST':
-        photo = PhotoModel.objects.get(id=photo_id)
-        if request.photo != photo.user:
-            return HttpResponse("권한이 없습니다.")
-        photo.delete()
-        return redirect('/')
+    photo = PhotoModel.objects.get(id=photo_id)
+    photo.delete()
+    return redirect('/')
 
 
 @login_required
 def trash(request):
     return render(request, 'trash.html')
-
-
-    # 즐겨찾기
-@login_required
-def favorites(request, id):
-    # photo_id = request.data.get('photo_id', None)
-    photo_id = PhotoModel.objects.get(id=id)
-    photo = PhotoModel.objects.all()
-    user_id = photo_id.user
-    
-    favorit = PhotoModel.objects.filter(photo_id=photo).first()
-
-    if favorit:
-        favorit.save()
-        
-    else:
-        favorites.create()
-        
-    return redirect('img_info/<int:id>/')
 
 
 def get_photo_info() :
@@ -128,3 +94,28 @@ def get_photo_info() :
 
         print(Lat, ",", Lon)
         
+def img_info(request, id):
+    if request.method == 'GET':
+        photo = PhotoModel.objects.get(id=id)
+        image = PhotoModel.objects.all()
+    
+    return render(request, 'img_info.html', context=dict(photo=photo, img=image, id=id))
+
+
+# 즐겨찾기
+@login_required
+def favorites(request, id):
+    # photo_id = request.data.get('photo_id', None)
+    photo_id = PhotoModel.objects.get(id=id)
+    photo = PhotoModel.objects.all()
+    user_id = photo_id.user
+    
+    favorit = PhotoModel.objects.filter(photo_id=photo).first()
+
+    if favorit:
+        favorit.save()
+        
+    else:
+        favorites.create()
+        
+    return redirect('img_info/<int:id>/')
