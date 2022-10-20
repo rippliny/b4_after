@@ -20,8 +20,14 @@ class PhotoModel(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     categories = models.ManyToManyField(Category,default='')
     favorites = models.ManyToManyField(UserModel, related_name='favorites' ,blank=True)
-    trash = models.ManyToManyField(UserModel, related_name='trash' ,blank=True)
 
 
     def __str__(self):
         return self.img.url
+
+class Trash(models.Model):
+    class Meta:
+        db_table = "trash"
+
+    user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+    trash = models.ImageField(upload_to='trash/', null=True)
