@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-메인페이지
+메인 페이지
 {% endblock %}
 
 {% block content %}
@@ -31,12 +31,14 @@
     {% for i in img %}
 
         {% if i.img %}
-            <img src="{{ i.img.url }}" style="height : 150px; margin-top : 30px;">
+            <a method="GET" href="/img_info/{{ i.id }}">
+                <img src="{{ i.img.url }}" style="height : 150px; margin-top : 30px;">
+            </a>
         {% endif %}
 
     {% endfor %}
 
-    {% endblock %}
 </div>
 
 </body>
+{% endblock %}
