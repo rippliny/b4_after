@@ -52,33 +52,32 @@
                 <div class="d-flex w-100 align-items-center justify-content-between">
                     <p><span class="material-symbols-outlined">today</span></p>
                 </div>
-                <div class="col-10 mb-1 small">(사진 촬영 날짜)</div>
+                <div class="col-10 mb-1 small">{{DateTime}}</div>
             </a>
 
                 <a href="#" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">
                     <div class="d-flex w-100 align-items-center justify-content-between" style="margin-bottom: 20px">
                         <p><span class="material-symbols-outlined">image</span></p>
                     </div>
-                    <div class="col-10 mb-1 small">(사진 크기)</div>
-                    <div class="col-10 mb-1 small">(셔터 스피드)</div>
-                    <div class="col-10 mb-1 small">(조리개)</div>
+                    <div class="col-10 mb-1 small">{{ExifImageHeight}} X {{ExifImageWidth}}</div>
+                    <div class="col-10 mb-1 small">{{ShutterSpeedValue}}</div>
+                    <div class="col-10 mb-1 small">{{FNumber}}</div>
                 </a>
 
                 <a href="#" class="list-group-item list-group-item-action py-3 lh-sm">
                     <div class="d-flex w-100 align-items-center justify-content-between">
                         <p><span class="material-symbols-outlined">camera</span></p>
                     </div>
-                    <div class="col-10 mb-1 small">(카메라 제조사)</div>
-                    <div class="col-10 mb-1 small">(카메라 모델명)</div>
-                    <div class="col-10 mb-1 small">(카메라 렌즈 모델명)</div>
+                    <div class="col-10 mb-1 small">{{Make}}</div>
+                    <div class="col-10 mb-1 small">{{Model}}</div>
+                    <div class="col-10 mb-1 small">{{LensModel}}</div>
                 </a>
 
                 <a href="#" class="list-group-item list-group-item-action py-3 lh-sm">
                     <div class="d-flex w-100 align-items-center justify-content-between">
                         <p><span class="material-symbols-outlined">map</span></p>
                     </div>
-                    <div class="col-10 mb-1 small">(촬영 좌표)</div>
-                    <div class="col-10 mb-1 small">(촬영 주소)</div>
+                    <div class="col-10 mb-1 small">{{Lat}} , {{Lon}} </div>
                 </a>
 
                 <div id="map" style="width:400px;height:400px;"></div>
@@ -88,7 +87,7 @@
                 <script>
                     var container = document.getElementById('map');
                     var options = {
-                        center: new kakao.maps.LatLng(33.450701, 126.570667),
+                        center: new kakao.maps.LatLng({{Lat}}, {{Lon}}),
                         level: 3
                     };
 
