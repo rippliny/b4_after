@@ -1,31 +1,39 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import ImageUpload
 from django.http import JsonResponse
 from PIL import Image
 from PIL.ExifTags import TAGS
-from .models import PhotoModel
+from .models import PhotoModel, Category
 from .od import classification
 from django.contrib.auth.decorators import login_required
-from .od import classification
-
-
 
 @login_required
 def category(request):
-    return render(request, 'category.html')
+    pht = PhotoModel.objects.all()
+    ctg = Category.objects.all()
+    return render(request, 'category.html', {'pht':pht, 'ctg':ctg})
 
 
 def fileUpload(request):
     if request.method == 'POST':
         photo = PhotoModel()
+        # ctg = Category()
         user = request.user
 
         photo.user = user
 
         photo.img = request.FILES["img"]
         photo.save()
-        photo.category = classification(photo.img)[1]
-        photo.save()
+        
+        categories = classification(photo.img)[1]
+        # ctg.name = categories
+        # ctg.save()
+        
+        categories = Category.objects.filter(name__in=categories)
+        if categories:
+            photo.categories.add(*categories)
+        else:
+            photo.categories.add(81)
         
         return redirect('/')
 
@@ -35,7 +43,6 @@ def fileUpload(request):
             'imageupload': imageupload,
         }
         return render(request, 'upload.html', context)
-
 
 def get_photo_info() :
         image = Image.open(" ") #이미지 파일 경로 또는 주소 입력
