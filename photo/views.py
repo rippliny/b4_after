@@ -3,11 +3,19 @@ from PIL import Image
 from PIL.ExifTags import TAGS
 
 from user.models import UserModel
-from .models import PhotoModel
+from .models import PhotoModel, Trash
 from .forms import ImageUpload
 from .od import classification
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 
+
+@login_required
+def category(request):
+    return render(request, 'category.html')
+
+
+@login_required
 def fileUpload(request):
     if request.method == 'POST':
         photo = PhotoModel()
@@ -15,10 +23,11 @@ def fileUpload(request):
 
         photo.user = user
         photo.img = request.FILES["img"]
+        photo.save()
         photo.category = classification(photo.img)[1]
         photo.save()
     
-        return redirect('/upload')
+        return redirect('/')
 
     else:
         imageupload = ImageUpload
@@ -27,7 +36,42 @@ def fileUpload(request):
         }
         return render(request, 'upload.html', context)
 
-def get_photo_info():
+
+@login_required
+def img_info(request, id):
+    if request.method == 'GET':
+        photo = PhotoModel.objects.get(id=id)
+        image = PhotoModel.objects.all()
+        context = {
+            'photo': photo,
+            'img': image,
+            'id' : id,
+        }
+        return render(request, 'img_info.html', context)
+
+    elif request.method == 'POST':
+        photo = PhotoModel.objects.get(id=id)
+        trash = Trash()
+        trash.user = request.user
+        trash.trash = photo.img
+        trash.save()
+
+        photo.delete()
+      
+        return redirect('/')
+
+
+@login_required
+def trash(request):
+    user = request.user.is_authenticated
+    trash = Trash.objects.all()
+    if user:
+        return render(request, 'trash.html', {'trash' : trash})
+    else:
+        return redirect('/sign-in')  
+
+
+def get_photo_info() :
         image = Image.open(" ") #이미지 파일 경로 또는 주소 입력
         info = image._getexif()
         image.close()
@@ -72,14 +116,21 @@ def get_photo_info():
         # 동경, 서경인지를 판단, 서경일 경우 -로 변경
         if exifGPS[3] == 'W': Lon = Lon * -1
 
-        print(Lat, ",", Lon)
-        
-def img_info(request, id):
-    if request.method == 'GET':
-        photo = PhotoModel.objects.get(id=id)
-        image = PhotoModel.objects.all()
-    
-    return render(request, 'img_info.html', context=dict(photo=photo, img=image, id=id))
+        context = {
+            'DateTime': DateTime,
+            'ExifImageHeight': ExifImageHeight,
+            'ExifImageWidth': ExifImageWidth,
+            'ShutterSpeedValue': ShutterSpeedValue,
+            'FNumber': FNumber,
+            'Make': Make,
+            'Model': Model,
+            'LensModel': LensModel,
+            'Lat' : Lat,
+            'Lon' : Lon,
+        }
+
+        return render(request, img_info.html, context)
+
 
 # 즐겨찾기
 @login_required
