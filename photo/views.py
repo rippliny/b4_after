@@ -27,6 +27,8 @@ def fileUpload(request):
         photo.save()
 
         categories = classification(photo.img)[1]
+        metadata = get_photo_info(photo.img)
+        print(metadata)
         # ctg.name = categories
         # ctg.save()
         
@@ -74,12 +76,15 @@ def trash(request):
     user = request.user.is_authenticated
     trash = Trash.objects.all()
     if user:
-        return render(request, 'trash.html', {'trash' : trash})
+        return render(request, 'trash.html', {'trash' : trash })
     else:
         return redirect('/sign-in')  
 
-def get_photo_info() :
-        image = Image.open(" ") #이미지 파일 경로 또는 주소 입력
+def get_photo_info(img_name) :
+        image_path = "media\\" + str(img_name)
+        print(image_path)
+        image = Image.open(image_path) #이미지 파일 경로 또는 주소 입력
+        print(image)
         info = image._getexif()
         image.close()
 
@@ -137,6 +142,7 @@ def get_photo_info() :
         }
 
         return render(request, img_info.html, context)
+
 
 
 # 즐겨찾기
