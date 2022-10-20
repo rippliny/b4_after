@@ -6,3 +6,4 @@ class ImageUpload(forms.ModelForm):
     class Meta:
         model = PhotoModel
         fields = ['img']
+

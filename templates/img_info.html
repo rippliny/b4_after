@@ -1,3 +1,4 @@
+{%load static%}
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -16,6 +17,8 @@
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"rel="stylesheet">
+    {% comment %} <link rel="stylesheet" href="{% static 'style.css' %}"> {% endcomment %}
+
     <style>
 
 
@@ -94,48 +97,51 @@
             </div>
         </div>
 
-        <div class="content">
-            <div class="icons" style="display:flex; flex-direction:row;">
-                <div>
-                    <a href="/photo/favorit/{{ photo.id }}">
-                        <!-- <span id="favorit_{{ photo.id }}" photo_id="{{ photo.id }}" class="material-symbols-outlined"> -->
-                            {% if photo.favorit %}
-                            <span class="material-icons">
-                                star
+        {% for i in img %}
+            {% if i.id == id %}
+            <div class="content">
+                <div class="icons" style="display:flex; flex-direction:row;">
+                    <div>
+                        <a href="/photo/favorit/{{ i.id }}">
+                            <span id="favorit_{{ i.id }}" photo_id="{{ i.id }}" class="material-icons">
+                                {% if i.favorites %}
+                                    star
+                                {% else %}
+                                    star_border
+                                {% endif %}
                             </span>
-                            {% else %}
+                        </a>
+                    </div>
+                    <div>
+                        <a href="/photo/trash/{{ i.id }}" id="favorit_{{ i.id }}" i_id="{{ i.id }}">
+                            <!-- <span id="trash_{{ img.id }}" photo_id="{{ img.id }}" class="material-icons-outlined"> -->
+                                {% if i.trash %}
+                                <span class="material-icons">
+                                    delete
+                                </span>
+                                {% else %}
+                                <span class="material-icons">
+                                    delete_outline
+                                </span>
+                                {% endif %}
+                            <!-- </span> -->
+                        </a>
+                    </div>
+                    <div>
+                        <a href="/photo/info/{{ i.id }}">
                             <span class="material-icons">
-                                star_border
+                                info
                             </span>
-                            {% endif %}
-                        <!-- </span> -->
-                    </a>
+                        </a>
+                    </div>
                 </div>
-                <div>
-                    <a href="/photo/trash/{{ photo.id }}">
-                        <!-- <span id="trash_{{ photo.id }}" photo_id="{{ photo.id }}" class="material-icons-outlined"> -->
-                            {% if photo.trash %}
-                            <span class="material-icons">
-                                delete
-                            </span>
-                            {% else %}
-                            <span class="material-icons">
-                                delete_outline
-                            </span>
-                            {% endif %}
-                        <!-- </span> -->
-                    </a>
-                </div>
-                <div>
-                    <a href="/photo/info/{{ photo.id }}">
-                        <span class="material-icons">
-                            info
-                        </span>
-                    </a>
-                </div>
-            </div>        
-            <img src="https://m.media-amazon.com/images/M/MV5BMTQ1MjAwNTM5Ml5BMl5BanBnXkFtZTYwNDM0MTc3._V1_.jpg"
-                 style="display: block; margin-top: 200px; margin-left: auto; margin-right: auto; height: 100%">
+            <div>
+                <img src="{% get_media_prefix %}{{ i.img }}"
+                        style="display: block; margin-top: 200px; margin-left: auto; margin-right: auto; height: 100%; width:80%;">
+            </div>
+            </div>
         </div>
-
-    </div>
+        {% endif %}
+    {% endfor %}
+</body>
+</html>

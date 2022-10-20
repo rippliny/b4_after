@@ -1,20 +1,19 @@
 from django.shortcuts import render, redirect
 from PIL import Image
 from PIL.ExifTags import TAGS
-from .models import PhotoModel
+from .models import PhotoModel, favorites
 from .forms import ImageUpload
 from .od import classification
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
 
-def upload(request):
+def fileUpload(request):
     if request.method == 'POST':
         photo = PhotoModel()
         user = request.user
+
         photo.user = user
         photo.img = request.FILES["img"]
         photo.category = classification(photo.img)[1]
-        
         photo.save()
     
         return redirect('/upload')
@@ -26,8 +25,7 @@ def upload(request):
         }
         return render(request, 'upload.html', context)
 
-def get_photo_info(request, id):
-    if request.method == 'POST':
+def get_photo_info():
         image = Image.open(" ") #이미지 파일 경로 또는 주소 입력
         info = image._getexif()
         image.close()
@@ -73,30 +71,28 @@ def get_photo_info(request, id):
         if exifGPS[3] == 'W': Lon = Lon * -1
 
         print(Lat, ",", Lon)
-
+        
+def img_info(request, id):
     if request.method == 'GET':
-        return render(request, 'img_info.html')
+        photo = PhotoModel.objects.get(id=id)
+        image = PhotoModel.objects.all()
     
+    return render(request, 'img_info.html', context=dict(photo=photo, img=image, id=id))
+
 # 즐겨찾기
 @login_required
-def favorites(request):
-    photo_id = request.data.get('photo_id', None)
-    favorites_text = request.data.get('favorites_text', False)
+def favorites(request, id):
+    # photo_id = request.data.get('photo_id', None)
+    photo_id = PhotoModel.objects.get(id=id)
+    photo = PhotoModel.objects.all()
+    user_id = photo_id.user
     
-    if favorites_text == 'star_border':
-        favorit = True
+    favorit = PhotoModel.objects.filter(photo_id=photo).first()
+
+    if favorit:
+        favorit.save()
         
     else:
-        favorit = False
+        favorites.create()
         
-    email = request.session.get('email', None)
-    favorites = PhotoModel.objects.filter(photo_id=photo_id, email=email).first()
-    
-    if favorites:
-        favorites.favorites = favorit
-        favorites.save()
-        
-    else:
-        PhotoModel.objects.create(photo_id=photo_id, favorit=favorit, email=email)
-        
-    return redirect('favorit/')
+    return redirect('img_info/<int:id>/')

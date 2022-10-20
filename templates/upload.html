@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block title %}
 로그인
 {% endblock %}
@@ -109,7 +111,7 @@
                 </div>
             </div>
             <div class="modal_image_upload">
-                <img src="man.jpg" id="img_section" class="modal_in_image">
+                <img src={% static "images/base_image.png" %} id="img_section" class="modal_in_image">
                 <div class="modal_in_image_upload">
                     <form method="post" action="{% url 'photo:upload' %}" enctype="multipart/form-data">
                         {% csrf_token %}
