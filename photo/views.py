@@ -1,12 +1,11 @@
 from django.shortcuts import render, redirect
-from .forms import ImageUpload
-from django.http import JsonResponse
 from PIL import Image
 from PIL.ExifTags import TAGS
 from .models import PhotoModel
+from .forms import ImageUpload
 from .od import classification
 from django.contrib.auth.decorators import login_required
-from .od import classification
+from django.http import HttpResponse
 
 
 
@@ -15,19 +14,18 @@ def category(request):
     return render(request, 'category.html')
 
 
+@login_required
 def fileUpload(request):
     if request.method == 'POST':
         photo = PhotoModel()
         user = request.user
 
         photo.user = user
-
         photo.img = request.FILES["img"]
-        photo.save()
         photo.category = classification(photo.img)[1]
         photo.save()
-        
-        return redirect('/')
+    
+        return redirect('/upload')
 
     else:
         imageupload = ImageUpload
@@ -37,7 +35,26 @@ def fileUpload(request):
         return render(request, 'upload.html', context)
 
 
+<<<<<<< HEAD
 def get_photo_info(request) :
+=======
+@login_required
+def delete(request, photo_id):
+    if request.method == 'POST':
+        photo = PhotoModel.objects.get(id=photo_id)
+        if request.photo != photo.user:
+            return HttpResponse("권한이 없습니다.")
+        photo.delete()
+        return redirect('/')
+
+
+@login_required
+def trash(request):
+    return render(request, 'trash.html')
+
+
+def get_photo_info() :
+>>>>>>> ebad6cc4a37168ea28ae92208937a0ce93e25012
         image = Image.open(" ") #이미지 파일 경로 또는 주소 입력
         info = image._getexif()
         image.close()
@@ -77,6 +94,7 @@ def get_photo_info(request) :
         # 동경, 서경인지를 판단, 서경일 경우 -로 변경
         if exifGPS[3] == 'W': Lon = Lon * -1
 
+<<<<<<< HEAD
         context = {
             'DateTime': DateTime,
             'ExifImageHeight': ExifImageHeight,
@@ -91,3 +109,32 @@ def get_photo_info(request) :
         }
 
         return render(request, img_info.html, context)
+=======
+        print(Lat, ",", Lon)
+        
+def img_info(request, id):
+    if request.method == 'GET':
+        photo = PhotoModel.objects.get(id=id)
+        image = PhotoModel.objects.all()
+    
+    return render(request, 'img_info.html', context=dict(photo=photo, img=image, id=id))
+
+
+# 즐겨찾기
+@login_required
+def favorites(request, id):
+    # photo_id = request.data.get('photo_id', None)
+    photo_id = PhotoModel.objects.get(id=id)
+    photo = PhotoModel.objects.all()
+    user_id = photo_id.user
+    
+    favorit = PhotoModel.objects.filter(photo_id=photo).first()
+
+    if favorit:
+        favorit.save()
+        
+    else:
+        favorites.create()
+        
+    return redirect('img_info/<int:id>/')
+>>>>>>> ebad6cc4a37168ea28ae92208937a0ce93e25012

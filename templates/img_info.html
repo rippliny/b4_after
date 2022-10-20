@@ -1,3 +1,4 @@
+{%load static%}
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -14,8 +15,9 @@
             crossorigin="anonymous"></script>
 
     <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
-
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"rel="stylesheet">
+    {% comment %} <link rel="stylesheet" href="{% static 'style.css' %}"> {% endcomment %}
 
     <style>
 
@@ -94,9 +96,42 @@
             </div>
         </div>
 
-        <div class="content">
-            <img src="https://m.media-amazon.com/images/M/MV5BMTQ1MjAwNTM5Ml5BMl5BanBnXkFtZTYwNDM0MTc3._V1_.jpg"
-                 style="display: block; margin-top: 200px; margin-left: auto; margin-right: auto; height: 100%">
+        {% for i in img %}
+            {% if i.id == id %}
+            <div class="content">
+                <div class="icons" style="display:flex; flex-direction:row;">
+                    <div>
+                        <a href="/photo/favorit/{{ i.id }}">
+                            <span id="favorit_{{ i.id }}" photo_id="{{ i.id }}" class="material-icons">
+                                {% if i.favorites %}
+                                    star
+                                {% else %}
+                                    star_border
+                                {% endif %}
+                            </span>
+                        </a>
+                    </div>
+                    <div>
+                        <form action="{% url 'photo:delete' photo.id %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit">삭제</button>
+                        </form>
+                    </div>
+                    <div>
+                        <a href="/photo/info/{{ i.id }}">
+                            <span class="material-icons">
+                                info
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            <div>
+                <img src="{% get_media_prefix %}{{ i.img }}"
+                        style="display: block; margin-top: 200px; margin-left: auto; margin-right: auto; height: 100%; width:80%;">
+            </div>
+            </div>
         </div>
-
-    </div>
+        {% endif %}
+    {% endfor %}
+</body>
+</html>

@@ -94,10 +94,12 @@
           <div class="custom-control custom-checkbox">
             <input type="checkbox" class="custom-control-input" id="aggrement" required>
             <label class="custom-control-label" for="aggrement">비밀번호 표시</label>
-
-
           </div>
-
+          {% if error %}
+              <div class="alert alert-danger" role="alert">
+                  {{ error }}
+              </div>
+          {% endif %}
           <hr class="mb-4">
 
           <div style="float: right">
