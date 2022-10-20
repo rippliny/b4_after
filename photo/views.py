@@ -6,7 +6,7 @@ from PIL.ExifTags import TAGS
 from .models import PhotoModel
 from .od import classification
 from django.contrib.auth.decorators import login_required
-from .od import classification
+from django.http import HttpResponse
 
 
 
@@ -14,7 +14,7 @@ from .od import classification
 def category(request):
     return render(request, 'category.html')
 
-
+@login_required
 def fileUpload(request):
     if request.method == 'POST':
         photo = PhotoModel()
@@ -35,6 +35,15 @@ def fileUpload(request):
             'imageupload': imageupload,
         }
         return render(request, 'upload.html', context)
+
+
+def delete_file(request, photo_id):
+    if request.method == 'POST':
+        photo = PhotoModel.objects.get(id=photo_id)
+        if request.user != photo.user:
+            return HttpResponse("권한이 없습니다.")
+        photo.delete()
+        return redirect('/')
 
 
 def get_photo_info() :
