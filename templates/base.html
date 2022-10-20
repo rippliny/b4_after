@@ -64,7 +64,11 @@
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="/logout">로그아웃</a></li>
+                        {% if user.is_authenticated %}
+                            <li><a class="dropdown-item" href="/logout">로그아웃</a></li>
+                        {% else %}
+                            <li><a class="dropdown-item" href="/sign-in">로그인</a></li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
