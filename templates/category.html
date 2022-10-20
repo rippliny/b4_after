@@ -1,21 +1,80 @@
 {% extends 'base.html' %}
 
 {% block title %}
-카테고리
+탐색페이지
 {% endblock %}
 
 {% block content %}
-    <!DOCTYPE html>
-    <html lang="en">
 
-    <head>
-        <title>category</title>
-    </head>
+<html>
 
-    <body>
-    카테고리
-        
-    </body>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+        B4 After 포토
+    </title>
+    <link href="https://fonts.googleapis.com/css?family=Raleway:200,100,400" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css" />
+    <link rel="stylesheet" href="compact-gallery.css">
+    <link rel="stylesheet" href="horizontal.css">
+    <!-- Optional seperate css files -->
+    <!-- <link rel="stylesheet" href="hero-img.css"> -->
+    <!-- <link rel="stylesheet" href="cards-gallery.css">
+    <link rel="stylesheet" href="grid-gallery.css"> -->
 
-    </html>
+</head>
+
+<body>
+
+    <!-- optional hero image  -->
+
+<!--     <div class="hero-image">
+        <img class="img-fluid" src="https://source.unsplash.com/1600x900/?profile,Photographer" alt="Photographer">
+        <div class="hero-text">
+            <p>Your Photography Studios</p>
+            mailto:
+            <button id="mailto">
+                <a href="mailto:photographyStudios@yourStudioName.net?Subject=Photography%Appointments" target="_top">
+                    < Appointments />
+                </a>
+            </button>
+        </div>
+    </div> -->
+
+
+<!-- HORIZONTAL SCROLLING  -->
+{% for c in ctg.all %}
+
+<a name="horizontal-scrolling"></a>
+<h5 style="margin: 10px 0px 0px 50px;">{{c.name}}</h5>
+<div id="scroll">
+    {% for p in pht %}
+        {% if p.categories == 1 %}
+            <img src="{{ p.img.url }}" style="height : 150px; margin-top : 30px;">
+        {% endif %}
+    {% endfor %}
+</div>
+
+{% endfor %}
+
+
+
+    <footer>
+        &copy; B4 After
+        <a href="#top">Go to top</a>
+    </footer>
+
+    <!-- local script file  -->
+    <script>
+        baguetteBox.run('.compact-gallery', { animation: 'slideIn' });
+
+    </script>
+
+</body>
+
+</html>
+
 {% endblock %}
