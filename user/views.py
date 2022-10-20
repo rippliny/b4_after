@@ -3,12 +3,14 @@ from .models import UserModel
 from django.contrib.auth import get_user_model
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
+from photo import models
 
 
 def main(request):
     user = request.user.is_authenticated
+    image = models.PhotoModel.objects.all()
     if user:
-        return render(request, 'mainpage.html')
+        return render(request, 'mainpage.html', {'img' : image})
     else:
         return redirect('/sign-in')
 

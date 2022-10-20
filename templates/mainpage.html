@@ -4,7 +4,39 @@
 메인페이지
 {% endblock %}
 
-
 {% block content %}
 
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+    .image_container {
+        position: absolute;
+        left: 5%;
+        width: 90%;
+        margin-top: 30px;
+    }
+</style>
+
+<body>
+
+<div class="image_container">
+    {% for i in img %}
+
+        {% if i.img %}
+            <img src="{{ i.img.url }}" style="height : 150px; margin-top : 30px;">
+        {% endif %}
+
+    {% endfor %}
+
+    {% endblock %}
+</div>
+
+</body>

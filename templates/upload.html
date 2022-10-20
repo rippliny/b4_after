@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block title %}
 로그인
 {% endblock %}
@@ -109,11 +111,11 @@
                 </div>
             </div>
             <div class="modal_image_upload">
-                <img src="man.jpg" id="img_section" class="modal_in_image">
+                <img src={% static "images/base_image.png" %} id="img_section" class="modal_in_image">
                 <div class="modal_in_image_upload">
                     <form method="post" action="{% url 'photo:upload' %}" enctype="multipart/form-data">
                         {% csrf_token %}
-                        <input type="file" name="imgfile" id="upload_file" accept="image/*" required=true value="업로드"/>
+                        <input type="file" name="img" id="upload_file" accept="image/*" required=true value="업로드"/>
                         <input type="submit" value="업로드">
                     </form>
                 </div>
