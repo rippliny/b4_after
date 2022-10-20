@@ -35,6 +35,18 @@ def fileUpload(request):
         return render(request, 'upload.html', context)
 
 
+def img_info(request, id):
+    if request.method == 'GET':
+        photo = PhotoModel.objects.get(id=id)
+        image = PhotoModel.objects.all()
+        context = {
+            'photo' : photo,
+            'img' : image,
+            'id' : id,
+        }
+    return render(request, 'img_info.html', context)
+
+
 @login_required
 def delete(request, photo_id):
     if request.method == 'POST':
@@ -48,6 +60,25 @@ def delete(request, photo_id):
 @login_required
 def trash(request):
     return render(request, 'trash.html')
+
+
+    # 즐겨찾기
+@login_required
+def favorites(request, id):
+    # photo_id = request.data.get('photo_id', None)
+    photo_id = PhotoModel.objects.get(id=id)
+    photo = PhotoModel.objects.all()
+    user_id = photo_id.user
+    
+    favorit = PhotoModel.objects.filter(photo_id=photo).first()
+
+    if favorit:
+        favorit.save()
+        
+    else:
+        favorites.create()
+        
+    return redirect('img_info/<int:id>/')
 
 
 def get_photo_info() :
@@ -97,28 +128,3 @@ def get_photo_info() :
 
         print(Lat, ",", Lon)
         
-def img_info(request, id):
-    if request.method == 'GET':
-        photo = PhotoModel.objects.get(id=id)
-        image = PhotoModel.objects.all()
-    
-    return render(request, 'img_info.html', context=dict(photo=photo, img=image, id=id))
-
-
-# 즐겨찾기
-@login_required
-def favorites(request, id):
-    # photo_id = request.data.get('photo_id', None)
-    photo_id = PhotoModel.objects.get(id=id)
-    photo = PhotoModel.objects.all()
-    user_id = photo_id.user
-    
-    favorit = PhotoModel.objects.filter(photo_id=photo).first()
-
-    if favorit:
-        favorit.save()
-        
-    else:
-        favorites.create()
-        
-    return redirect('img_info/<int:id>/')
