@@ -97,19 +97,23 @@
 
         {% for i in img %}
             {% if i.id == id %}
-            <div class="content">
-                <div class="icons" style="display:flex; flex-direction:row;">
-                    <div>
-                        <a href="/photo/favorit/{{ i.id }}">
-                            <span id="favorit_{{ i.id }}" photo_id="{{ i.id }}" class="material-icons">
-                                {% if i.favorites %}
-                                    star
-                                {% else %}
-                                    star_border
-                                {% endif %}
-                            </span>
-                        </a>
-                    </div>
+                <div class="content">
+                    <div class="icons" style="display:flex; flex-direction:row;">
+                        <!-- 즐겨찾기 -->
+                        <div>
+                            <form action="{% url 'photo:favorit' photo.id %}" method="POST">
+                            {% csrf_token %}
+                                <button type="submit">
+                                    <span class="material-icons">
+                                        {% if request.user in favorit %}
+                                            star
+                                        {% else %}
+                                            star_border
+                                        {% endif %}
+                                    </span>
+                                </button>
+                            </form>
+                        </div>
                     <div>
                         <form action="{% url 'photo:delete' photo.id %}" method="POST">
                             {% csrf_token %}
