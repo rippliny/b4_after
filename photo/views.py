@@ -1,11 +1,12 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from .forms import ImageUpload
-from django.http import JsonResponse
+from django.shortcuts import render, redirect
 from PIL import Image
 from PIL.ExifTags import TAGS
-from .models import PhotoModel, Category
+from user.models import UserModel
+from .models import PhotoModel, Trash, Category
+from .forms import ImageUpload
 from .od import classification
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 
 @login_required
 def category(request):
@@ -14,6 +15,7 @@ def category(request):
     return render(request, 'category.html', {'pht':pht, 'ctg':ctg})
 
 
+@login_required
 def fileUpload(request):
     if request.method == 'POST':
         photo = PhotoModel()
@@ -21,10 +23,9 @@ def fileUpload(request):
         user = request.user
 
         photo.user = user
-
         photo.img = request.FILES["img"]
         photo.save()
-        
+
         categories = classification(photo.img)[1]
         # ctg.name = categories
         # ctg.save()
@@ -34,7 +35,7 @@ def fileUpload(request):
             photo.categories.add(*categories)
         else:
             photo.categories.add(81)
-        
+            
         return redirect('/')
 
     else:
@@ -43,6 +44,39 @@ def fileUpload(request):
             'imageupload': imageupload,
         }
         return render(request, 'upload.html', context)
+
+@login_required
+def img_info(request, id):
+    if request.method == 'GET':
+        photo = PhotoModel.objects.get(id=id)
+        image = PhotoModel.objects.all()
+        context = {
+            'photo': photo,
+            'img': image,
+            'id' : id,
+        }
+        return render(request, 'img_info.html', context)
+
+    elif request.method == 'POST':
+        photo = PhotoModel.objects.get(id=id)
+        trash = Trash()
+        trash.user = request.user
+        trash.trash = photo.img
+        trash.save()
+
+        photo.delete()
+      
+        return redirect('/')
+
+
+@login_required
+def trash(request):
+    user = request.user.is_authenticated
+    trash = Trash.objects.all()
+    if user:
+        return render(request, 'trash.html', {'trash' : trash})
+    else:
+        return redirect('/sign-in')  
 
 def get_photo_info() :
         image = Image.open(" ") #이미지 파일 경로 또는 주소 입력
@@ -89,4 +123,36 @@ def get_photo_info() :
         # 동경, 서경인지를 판단, 서경일 경우 -로 변경
         if exifGPS[3] == 'W': Lon = Lon * -1
 
-        print(Lat, ",", Lon)
+        context = {
+            'DateTime': DateTime,
+            'ExifImageHeight': ExifImageHeight,
+            'ExifImageWidth': ExifImageWidth,
+            'ShutterSpeedValue': ShutterSpeedValue,
+            'FNumber': FNumber,
+            'Make': Make,
+            'Model': Model,
+            'LensModel': LensModel,
+            'Lat' : Lat,
+            'Lon' : Lon,
+        }
+
+        return render(request, img_info.html, context)
+
+
+# 즐겨찾기
+@login_required
+def favorites(request, id):
+    # photo_id = request.data.get('photo_id', None)
+    photo_id = PhotoModel.objects.get(id=id)
+    photo = PhotoModel.objects.all()
+    user_id = photo_id.user
+    
+    favorit = PhotoModel.objects.filter(photo_id=photo).first()
+
+    if favorit:
+        favorit.save()
+        
+    else:
+        favorites.create()
+        
+    return redirect('img_info/<int:id>/')

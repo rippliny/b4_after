@@ -134,9 +134,9 @@
 
     <div class="box">
         <div class="logo">
-            <h1><span style=color:blue>B</span><span style=color:red>4</span><span style=color:orange> A</span><span
-                    style=color:blue>f</span><span style=color:green>t</span><span style=color:red>e</span><span
-                    style=color:orange>r</span></h1>
+            <h1><span style=color:dodgerblue>B</span><span style=color:crimson>4</span><span style=color:dodgerblue> A</span><span
+                    style=color:crimson>f</span><span style=color:orange>t</span><span style=color:forestgreen>e</span><span
+                    style=color:dodgerblue>r</span></h1>
         </div>
         <h2>로그인</h2>
         <p></p>
@@ -151,6 +151,11 @@
                 <input type="password" name="password" required onkeyup="this.setAttribute('value', this.value);" value="">
                 <label>Password</label>
             </div>
+            {% if error %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endif %}
             <a href="/sign-up">계정 만들기</a><button style="float:right" type="submit"
                 class="btn btn-primary btn-lg btn-block">로그인</button>
 
