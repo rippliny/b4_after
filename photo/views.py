@@ -1,41 +1,32 @@
 from django.shortcuts import render, redirect
 from PIL import Image
 from PIL.ExifTags import TAGS
+
 from user.models import UserModel
-from .models import PhotoModel, Trash, Category
+from .models import PhotoModel, Trash, Favorit
 from .forms import ImageUpload
 from .od import classification
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 
+
 @login_required
 def category(request):
-    pht = PhotoModel.objects.all()
-    ctg = Category.objects.all()
-    return render(request, 'category.html', {'pht':pht, 'ctg':ctg})
+    return render(request, 'category.html')
 
 
 @login_required
 def fileUpload(request):
     if request.method == 'POST':
         photo = PhotoModel()
-        # ctg = Category()
         user = request.user
 
         photo.user = user
         photo.img = request.FILES["img"]
         photo.save()
-
-        categories = classification(photo.img)[1]
-        # ctg.name = categories
-        # ctg.save()
-        
-        categories = Category.objects.filter(name__in=categories)
-        if categories:
-            photo.categories.add(*categories)
-        else:
-            photo.categories.add(81)
-            
+        photo.category = classification(photo.img)[1]
+        photo.save()
+    
         return redirect('/')
 
     else:
@@ -44,6 +35,7 @@ def fileUpload(request):
             'imageupload': imageupload,
         }
         return render(request, 'upload.html', context)
+
 
 @login_required
 def img_info(request, id):
@@ -63,7 +55,7 @@ def img_info(request, id):
         trash.user = request.user
         trash.trash = photo.img
         trash.save()
-
+        
         photo.delete()
       
         return redirect('/')
@@ -76,7 +68,32 @@ def trash(request):
     if user:
         return render(request, 'trash.html', {'trash' : trash})
     else:
-        return redirect('/sign-in')  
+        return redirect('/sign-in')
+
+# 즐겨찾기
+@login_required
+def favorit(request, id):
+    if request.method == 'POST':
+        photo = PhotoModel.objects.get(id=id)
+        favorit = Favorit()
+        favorit.user = request.user
+        favorit.favorit = photo.img
+        favorit.save()
+            
+        photo.delete()
+      
+        return redirect('/')
+
+# 즐겨찾기 페이지
+@login_required
+def favorit_view(request):
+    user = request.user.is_authenticated
+    favorit = Favorit.objects.all()
+    if user:
+        return render(request, 'favorites.html', {'favorit' : favorit})
+    else:
+        return redirect('/sign-in')
+
 
 def get_photo_info() :
         image = Image.open(" ") #이미지 파일 경로 또는 주소 입력
@@ -139,26 +156,26 @@ def get_photo_info() :
         return render(request, img_info.html, context)
 
 
-# 즐겨찾기
-@login_required
-def favorites(request, id):
-    me = request.user
-    click_user = PhotoModel.objects.get(id=id)
-    if me in click_user.favorites.all():
-        click_user.favorites.remove(request.user)
-    else:
-        click_user.favorites.add(request.user)
-    return redirect('/')
+# # 즐겨찾기
+# @login_required
+# def favorites(request, id):
+#     me = request.user
+#     click_user = PhotoModel.objects.get(id=id)
+#     if me in click_user.favorites.all():
+#         click_user.favorites.remove(request.user)
+#     else:
+#         click_user.favorites.add(request.user)
+#     return redirect('/')
 
-# 즐겨찾기 페이지
-@login_required
-def favorites_view(request):
-    me = request.user
-    photo = PhotoModel.objects.all().first()
-    favorit_list = photo.favorites.all()
-    favorit = photo.favorites.filter(username=me)
+# # 즐겨찾기 페이지
+# @login_required
+# def favorites_view(request):
+#     me = request.user
+#     photo = PhotoModel.objects.all().first()
+#     favorit_list = photo.favorites.all()
+#     favorit = photo.favorites.filter(username=me)
     
-    if me:
-        return render(request, 'favorites.html', {'photo':photo, 'favorit_list':favorit_list, 'favorit':favorit})
-    else:
-        return redirect('/')
+#     if me:
+#         return render(request, 'favorites.html', {'photo':photo, 'favorit_list':favorit_list, 'favorit':favorit})
+#     else:
+#         return redirect('/')

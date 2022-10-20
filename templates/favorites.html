@@ -28,17 +28,16 @@
 <body>
 
 <div class="image_container">
+{% for i in favorit %}
 
-<!-- {% for f in favorit %} -->
-    {% for p in photo %}
-        {% if p.img %}
-            <a method="GET" href="/img_info/{{ p.id }}">
-                <img src="{{ p.img.url }}" style="height : 150px; margin-top : 30px;">
-            </a>
-        {% endif %}
-    {% endfor %}
-<!-- {% endfor %} -->
+    {% if i.favorit %}
 
+        <a method="GET" href="/img_info/{{ p.id }}">
+            <img src="{{ i.favorit.url }}" style="height : 150px; margin-top : 30px;">
+        </a>
+    {% endif %}
+
+{% endfor %}
 </div>
 </body>
 </html>
