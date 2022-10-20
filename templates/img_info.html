@@ -97,18 +97,38 @@
 
         {% for i in img %}
             {% if i.id == id %}
-            <div class="content">
-                <div class="icons" style="display:flex; flex-direction:row;">
-                    <div>
-                        <a href="/photo/favorit/{{ i.id }}">
-                            <span id="favorit_{{ i.id }}" photo_id="{{ i.id }}" class="material-icons">
-                                {% if i.favorites %}
-                                    star
-                                {% else %}
-                                    star_border
-                                {% endif %}
-                            </span>
-                        </a>
+                <div class="content">
+                    <div class="icons" style="display:flex; flex-direction:row;">
+                        <!-- 즐겨찾기 -->
+                        <div>
+                            <a href="/photo/favorit/{{ i.id }}" method="POST">
+                                <span class="material-icons">
+                                    {% if request.user in i.favorites.all %}
+                                        star
+                                    {% else %}
+                                        star_border
+                                    {% endif %}
+                                </span>
+                            </a>
+                        </div>
+                        <div>
+                            <a href="/photo/trash/{{ i.id }}" method="POST">
+                                <span class="material-icons">
+                                    {% if request.user in i.trash.all %}
+                                        delete
+                                    {% else %}
+                                        delete_outline
+                                    {% endif %}
+                                </span>
+                            </a>
+                        </div>
+                        <div>
+                            <a href="/photo/info/{{ i.id }}">
+                                <span class="material-icons">
+                                    info
+                                </span>
+                            </a>
+                        </div>
                     </div>
                     <div>
                         <form action="{% url 'photo:delete' photo.id %}" method="POST">
