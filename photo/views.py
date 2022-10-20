@@ -37,7 +37,7 @@ def fileUpload(request):
         return render(request, 'upload.html', context)
 
 
-def get_photo_info() :
+def get_photo_info(request) :
         image = Image.open(" ") #이미지 파일 경로 또는 주소 입력
         info = image._getexif()
         image.close()
@@ -47,9 +47,6 @@ def get_photo_info() :
         for tag, value in info.items():
             decoded = TAGS.get(tag, tag)
             taglabel[decoded] = value
-
-        print(taglabel['DateTimeOriginal'])  # 촬영 시각
-        print(taglabel['Make'], taglabel['Model'])  # 카메라 기종
 
         # 촬영 위치
         exifGPS = taglabel['GPSInfo']
@@ -69,8 +66,6 @@ def get_photo_info() :
         Lat = str(int(latDeg)) + "°" + str(int(latMin)) + "'" + str(latSec) + "\"" + exifGPS[1]
         Lon = str(int(lonDeg)) + "°" + str(int(lonMin)) + "'" + str(lonSec) + "\"" + exifGPS[3]
 
-        print(Lat, Lon)
-
         # 도 decimal로 나타내기
         # 위도 계산
         Lat = (latDeg + (latMin + latSec / 60.0) / 60.0)
@@ -82,4 +77,17 @@ def get_photo_info() :
         # 동경, 서경인지를 판단, 서경일 경우 -로 변경
         if exifGPS[3] == 'W': Lon = Lon * -1
 
-        print(Lat, ",", Lon)
+        context = {
+            'DateTime': DateTime,
+            'ExifImageHeight': ExifImageHeight,
+            'ExifImageWidth': ExifImageWidth,
+            'ShutterSpeedValue': ShutterSpeedValue,
+            'FNumber': FNumber,
+            'Make': Make,
+            'Model': Model,
+            'LensModel': LensModel
+            'Lat' : Lat,
+            'Lon' : Lon,
+        }
+
+        return render(request, img_info.html, context)
