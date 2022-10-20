@@ -81,11 +81,9 @@ def get_photo_info(request, id):
 @login_required
 def favorites(request):
     photo_id = request.data.get('photo_id', None)
-    favorites_text = request.data.get('favorites_text', True)
-    print(favorites_text)
+    favorites_text = request.data.get('favorites_text', False)
     
     if favorites_text == 'star_border':
-        print('daljeajivlejg;aheik')
         favorit = True
         
     else:
