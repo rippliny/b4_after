@@ -8,6 +8,5 @@ urlpatterns = [
     path('upload/', views.fileUpload, name='upload'),
     path('img_info/<int:id>/', views.img_info, name='img_info'),
     path('photo/favorit/<int:id>/', views.favorites, name='favorites'),
-    # path('trash/<int:id>/', views.trash, name='trash'),
-    # path('category/', views.category, name='category'),
+    path('photo/favorit/', views.favorites_view, name='get_favorites'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

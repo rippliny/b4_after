@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from PIL import Image
 from PIL.ExifTags import TAGS
-from .models import PhotoModel, favorites
+
+from user.models import UserModel
+from .models import PhotoModel
 from .forms import ImageUpload
 from .od import classification
 from django.contrib.auth.decorators import login_required
@@ -82,17 +84,23 @@ def img_info(request, id):
 # 즐겨찾기
 @login_required
 def favorites(request, id):
-    # photo_id = request.data.get('photo_id', None)
-    photo_id = PhotoModel.objects.get(id=id)
-    photo = PhotoModel.objects.all()
-    user_id = photo_id.user
-    
-    favorit = PhotoModel.objects.filter(photo_id=photo).first()
-
-    if favorit:
-        favorit.save()
-        
+    me = request.user
+    click_user = PhotoModel.objects.get(id=id)
+    if me in click_user.favorites.all():
+        click_user.favorites.remove(request.user)
     else:
-        favorites.create()
-        
-    return redirect('img_info/<int:id>/')
+        click_user.favorites.add(request.user)
+    return redirect('/')
+
+# 즐겨찾기 페이지
+@login_required
+def favorites_view(request):
+    me = request.user
+    photo = PhotoModel.objects.all().first()
+    favorit_list = photo.favorites.all()
+    favorit = photo.favorites.filter(username=me)
+    
+    if me:
+        return render(request, 'favorites.html', {'photo':photo, 'favorit_list':favorit_list, 'favorit':favorit})
+    else:
+        return redirect('/')
