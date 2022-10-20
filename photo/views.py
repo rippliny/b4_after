@@ -42,39 +42,10 @@ def img_info(request, id):
     if request.method == 'GET':
         photo = PhotoModel.objects.get(id=id)
         image = PhotoModel.objects.all()
-        context = {
-            'photo': photo,
-            'img': image,
-            'id' : id,
-        }
-        return render(request, 'img_info.html', context)
-
-    elif request.method == 'POST':
-        photo = PhotoModel.objects.get(id=id)
-        trash = Trash()
-        trash.user = request.user
-        trash.trash = photo.img
-        trash.save()
-
-        photo.delete()
-      
-        return redirect('/')
-
-
-@login_required
-def trash(request):
-    user = request.user.is_authenticated
-    trash = Trash.objects.all()
-    if user:
-        return render(request, 'trash.html', {'trash' : trash})
-    else:
-        return redirect('/sign-in')  
-
-
-def get_photo_info() :
-        image = Image.open(" ") #이미지 파일 경로 또는 주소 입력
-        info = image._getexif()
-        image.close()
+        
+        image_info = Image.open() #이미지 파일 경로 또는 주소 입력
+        info = image_info._getexif()
+        image_info.close()
 
         taglabel = {}
 
@@ -127,9 +98,33 @@ def get_photo_info() :
             'LensModel': LensModel,
             'Lat' : Lat,
             'Lon' : Lon,
+            'photo': photo,
+            'img': image,
+            'id' : id,
         }
 
-        return render(request, img_info.html, context)
+        return render(request, 'img_info.html', context)
+
+    elif request.method == 'POST':
+        photo = PhotoModel.objects.get(id=id)
+        trash = Trash()
+        trash.user = request.user
+        trash.trash = photo.img
+        trash.save()
+
+        photo.delete()
+      
+        return redirect('/')
+
+
+@login_required
+def trash(request):
+    user = request.user.is_authenticated
+    trash = Trash.objects.all()
+    if user:
+        return render(request, 'trash.html', {'trash' : trash})
+    else:
+        return redirect('/sign-in')  
 
 
 # 즐겨찾기
