@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-메인페이지
+메인 페이지
 {% endblock %}
 
 {% block content %}
@@ -42,6 +42,10 @@
         left: 50%;
         position: sticky;
     }
+
+    a {
+        text-decoration-line: none;
+    }
     
 </style>
 
@@ -52,7 +56,9 @@
     {% for i in img %}
 
         {% if i.img %}
-            <a href="/detail"><img src="{{ i.img.url }}" style="height : 150px; margin-top : 30px; cursor: pointer;"></a>
+            <a method="GET" href="/img_info/{{ i.id }}">
+                <img src="{{ i.img.url }}" style="height : 150px; margin-top : 30px; cursor: pointer;">
+            </a>
         {% endif %}
 
     {% endfor %}

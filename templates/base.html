@@ -55,6 +55,12 @@
                         <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
                     </a>
                     <ul class="dropdown-menu text-small">
+                        {% if user.is_authenticated %}
+                        <li><a class="dropdown-item">{{user.last_name}}님, 안녕하세요?</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        {% endif %}
                         <li><a class="dropdown-item" href="/upload">업로드</a></li>
                         <li><a class="dropdown-item" href="/">사진</a></li>
                         <li><a class="dropdown-item" href="/category">탐색</a></li>
@@ -63,7 +69,11 @@
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="/logout">로그아웃</a></li>
+                        {% if user.is_authenticated %}
+                            <li><a class="dropdown-item" href="/logout">로그아웃</a></li>
+                        {% else %}
+                            <li><a class="dropdown-item" href="/sign-in">로그인</a></li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
