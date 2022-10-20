@@ -3,12 +3,14 @@ from .models import UserModel
 from django.contrib.auth import get_user_model
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
+from photo import models
 
 
 def main(request):
     user = request.user.is_authenticated
+    image = models.PhotoModel.objects.all()
     if user:
-        return render(request, 'mainpage.html')
+        return render(request, 'mainpage.html', {'img' : image})
     else:
         return redirect('/sign-in')
 
@@ -32,10 +34,12 @@ def sign_up_view(request):
             return render(request, 'user/signup.html', {'error':'패스워드를 확인해주세요.'})
         else: # pw가 일치하면 하는 부분.
             if username == '' or password == '':
-                return render(request, 'user/signup.html', {'error': '사용자 이름과 비밀번호는 필수항목입니다.'})
+                return render(request, 'user/signup.html', {'error': '이매일과 비밀번호는 필수항목입니다.'})
             exist_user = get_user_model().objects.filter(username=username)
             if exist_user:
                 return render(request, 'user/signup.html', {'error': '사용자가 존재합니다.'})
+            if '@' not in username:
+                return render(request, 'user/signup.html', {'error': '이메일 형식이 아닙니다.'})
             else:
                 UserModel.objects.create_user(username=username, password=password, first_name=first_name, last_name=last_name)
                 return redirect('/sign-in')
@@ -47,12 +51,15 @@ def sign_in_view(request):
         password = request.POST.get('password', '')
 
         me = auth.authenticate(request, username=username, password=password)
-        if me is not None:
-            auth.login(request, me)
-            return redirect('/') 
+        if '@' not in username:
+            return render(request, 'user/signin.html', {'error':'이메일 형식이 아닙니다.'})
         else:
-            return render(request, 'user/signin.html', {'error':'이름 혹은 패스워드를 확인해주세요.'})
-            # return redirect('/login')
+            if me is not None: 
+                auth.login(request, me)
+                return redirect('/') 
+            else:
+                return render(request, 'user/signin.html', {'error':'존재하지 않는 계정입니다.'})
+                # return redirect('/login')
 
     elif request.method == 'GET': # 화면을 보여줄 때니까 get
         user = request.user.is_authenticated

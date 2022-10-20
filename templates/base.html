@@ -40,7 +40,7 @@
                 </a>
 
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    <li><a href="#" class="nav-link px-2 link-secondary"> <img src={% static "images/logo.png" %}
+                    <li><a href="/" class="nav-link px-2 link-secondary"> <img src={% static "images/logo.png" %}
                                 style="height: 20px"></a></li>
                 </ul>
 
@@ -55,13 +55,30 @@
                         <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
                     </a>
                     <ul class="dropdown-menu text-small">
-                        <li><a class="dropdown-item" href="/upload">업로드</a></li>
-                        <li><a class="dropdown-item" href="/">사진</a></li>
-                        <li><a class="dropdown-item" href="/category">탐색</a></li>
+                        {% if user.is_authenticated %}
+                        <li><a class="dropdown-item">{{user.last_name}}님, 안녕하세요?</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="/logout">로그아웃</a></li>
+                        {% endif %}
+                        <li><a class="dropdown-item" href="/upload">업로드</a></li>
+                        <li><a class="dropdown-item" href="/">사진</a></li>
+                        <li><a class="dropdown-item" href="/category">탐색</a></li>
+<<<<<<< HEAD
+                        <li><a class="dropdown-item" href="photo/favorit/">즐겨찾기</a></li>
+                        <li><a class="dropdown-item" href="photo/trash/">휴지통</a></li>
+=======
+                        <li><a class="dropdown-item" href="/bookmark">즐겨찾기</a></li>
+                        <li><a class="dropdown-item" href="/trash">휴지통</a></li>
+>>>>>>> 94fcc422fa0b5fabdabb9593fe88e7c92d11d1f9
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        {% if user.is_authenticated %}
+                            <li><a class="dropdown-item" href="/logout">로그아웃</a></li>
+                        {% else %}
+                            <li><a class="dropdown-item" href="/sign-in">로그인</a></li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>

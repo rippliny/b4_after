@@ -1,3 +1,6 @@
 from django.contrib import admin
+from .models import PhotoModel, Category
 
-# Register your models here.
+
+admin.site.register(PhotoModel)
+admin.site.register(Category)
