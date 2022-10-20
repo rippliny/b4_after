@@ -9,7 +9,7 @@ urlpatterns = [
     path('img_info/<int:id>/', views.img_info, name='img_info'),
     path('img_info/<int:id>/delete', views.img_info, name='delete'),
     path('photo/favorit/<int:id>/', views.favorites, name='favorites'),
+    path('photo/favorit/', views.favorites_view, name='get_favorites'),
     path('trash/', views.trash, name='trash'),
-
-    # path('category/', views.category, name='category'),
+    path('category/', views.category, name='category'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

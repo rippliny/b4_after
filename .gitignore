@@ -141,7 +141,6 @@ env.bak/
 venv.bak/
 media/
 result.jpg
-migrations/
 
 # Spyder project settings
 .spyderproject

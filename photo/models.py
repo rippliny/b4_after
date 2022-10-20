@@ -1,6 +1,15 @@
 from django.db import models
 from user.models import UserModel
 
+class Category(models.Model):
+    class Meta:
+        db_table = "category"
+        
+    name = models.CharField(max_length=30)
+    
+    def __str__(self):
+        return self.name
+        
 class PhotoModel(models.Model):
     class Meta:
         db_table = "photo"
@@ -9,13 +18,12 @@ class PhotoModel(models.Model):
     img = models.ImageField(upload_to='photo/', null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    category = models.CharField(max_length=16, null=True, default='')
+    categories = models.ManyToManyField(Category,default='')
     favorites = models.ManyToManyField(UserModel, related_name='favorites' ,blank=True)
 
 
     def __str__(self):
-        return 'id : {}'.format(self.id)
-
+        return self.img.url
 
 class Trash(models.Model):
     class Meta:
