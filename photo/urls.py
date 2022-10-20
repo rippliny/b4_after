@@ -6,7 +6,6 @@ from . import views
 app_name = 'photo'
 urlpatterns = [
     path('upload/', views.upload, name='upload'),
-    path('category/', views.category, name='category'),
-    path('favorites/', views.favorites, name='favorites'),
-    path('trash/', views.trash, name='trash'),
+    path('img_info/', views.get_photo_info, name='img_info'),
+    # path('category/', views.category, name='category'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

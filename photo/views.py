@@ -26,7 +26,8 @@ def upload(request):
         }
         return render(request, 'upload.html', context)
 
-def get_photo_info() :
+def get_photo_info(request, id):
+    if request.method == 'POST':
         image = Image.open(" ") #이미지 파일 경로 또는 주소 입력
         info = image._getexif()
         image.close()
@@ -72,29 +73,19 @@ def get_photo_info() :
         if exifGPS[3] == 'W': Lon = Lon * -1
 
         print(Lat, ",", Lon)
-        
-# 카테고리
-@login_required
-def category(request):
-    photo = PhotoModel()
-    category =  photo.category = classification(photo.img)[1]
-    people = category['person']
-    animuals = ['bird', 'cat', 'dog', 'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe', 'backpack', 'umbrella', 'handbag', 'tie', 'suitcase', 'frisbee']
-    foods = ['banana', 'apple', 'sandwich', 'orange', 'broccoli', 'carrot', 'hot dog', 'pizza', 'donut', 'cake']
-    traffic = ['bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train', 'truck', 'boat', 'traffic light', 'fire hydrant', 'stop sign', 'parking meter', 'bench']
-    things = ['chair', 'couch', 'skis', 'snowboard', 'sports ball', 'kite', 'baseball bat', 'baseball glove', 'skateboard', 'surfboard', 'tennis racket', 
-                'bottle', 'wine glass', 'cup', 'fork', 'knife', 'spoon', 'bowl', 'potted plant', 'bed', 'dining table', 'toilet', 'tv', 'laptop', 'mouse', 'remote', 'keyboard', 'cell phone', 'microwave', 'oven', 'toaster', 'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear', 'hair drier', 'toothbrush']
+
+    if request.method == 'GET':
+        return render(request, 'img_info.html')
     
-    return render(request, 'category.html')
-
-
 # 즐겨찾기
 @login_required
 def favorites(request):
     photo_id = request.data.get('photo_id', None)
     favorites_text = request.data.get('favorites_text', True)
+    print(favorites_text)
     
-    if favorites_text == 'favorites_border':
+    if favorites_text == 'star_border':
+        print('daljeajivlejg;aheik')
         favorit = True
         
     else:
@@ -111,31 +102,3 @@ def favorites(request):
         PhotoModel.objects.create(photo_id=photo_id, favorit=favorit, email=email)
         
     return redirect('favorit/')
-
-# 휴지동
-@login_required
-def trash(request):
-    photo_id = request.data.get('photo_id', None)
-    trash_text = request.data.get('trash_text', True)
-
-    if trash_text == 'trash_border':
-        trash = True
-    else:
-        trash = False
-        
-    email = request.session.get('email', None)
-    trashes = PhotoModel.objects.filter(photo_id=photo_id, email=email).first()
-    
-    if trashes:
-        trashes.trash = trash
-        trashes.save()
-    else:
-        PhotoModel.objects.create(photo_id=photo_id, trash=trash, email=email)
-        
-    return redirect('trash/')
-
-# 휴지통 삭제
-def trash_delete(request, id):
-    feed = PhotoModel.objects.get(id=id)
-    feed.delete()
-    return redirect('trash/')

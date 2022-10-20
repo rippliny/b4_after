@@ -1,36 +1,9 @@
 {% extends 'base.html' %}
 
 {% block title %}
-메인페이지
+메인 페이지
 {% endblock %}
 
-
 {% block content %}
-
-<div>
-    <div>
-        <a href="/photo/{{ photo.id }}">
-            <span id="bookmark_{{ photo.id }}" photo_id="{{ photo.id }}" class="material-icons-outlined">
-                {% if photo.favorit %}
-                bookmark
-                {% else %}
-                bookmark_border
-                {% endif %}
-            </span>
-        </a>
-    </div>
-
-    <div>
-        <a href="/photo/{{ photo.id }}">
-            <span id="trash_{{ photo.id }}" photo_id="{{ photo.id }}" class="material-icons-outlined">
-                {% if photo.trash %}
-                trash
-                {% else %}
-                trash_border
-                {% endif %}
-            </span>
-        </a>
-    </div>
-</div>
-
+메인 페이지
 {% endblock %}
