@@ -4,8 +4,8 @@
 즐겨찾기 페이지
 {% endblock %}
 
-
 {% block content %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,7 +13,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>favorit Photos</title>
 </head>
 
 <style>
@@ -23,21 +23,26 @@
         width: 90%;
         margin-top: 30px;
     }
+
+    a {
+        text-decoration-line: none;
+    }
 </style>
 
 <body>
 
+<div>
+    <p class="fs-2" style="margin-left: 100px; margin-top: 20px;">즐겨찾기</p>
+</div>
+
 <div class="image_container">
-{% for i in favorit %}
-
-    {% if i.favorit %}
-
-        <a method="GET" href="/img_info/{{ p.id }}">
-            <img src="{{ i.favorit.url }}" style="height : 150px; margin-top : 30px;">
-        </a>
-    {% endif %}
-
-{% endfor %}
+    {% for i in favorit %}
+        {% if i.favorit %}
+            <a method="GET" href="/favorit/{{ i.id }}">
+                <img src="{{ i.favorit.url }}" style="height : 150px; margin-top : 30px;">
+            </a>
+        {% endif %}
+    {% endfor %}
 </div>
 </body>
 </html>

@@ -13,5 +13,5 @@ urlpatterns = [
     path('restore/<int:id>/', views.restore, name='trash_restore'),
     path('category/', views.category, name='category'),
     path('favorit/', views.favorit_view, name='favorit_view'),
-    path('category/', views.category, name='category'),
+    path('favorit/<int:id>/', views.favorit_info_view, name='favorit_info_view'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
