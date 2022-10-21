@@ -1,9 +1,8 @@
 from django.shortcuts import render, redirect
 from PIL import Image
 from PIL.ExifTags import TAGS
-
 from user.models import UserModel
-from .models import PhotoModel, Trash, Favorit
+from .models import Category, PhotoModel, Trash, Favorit, Category
 from .forms import ImageUpload
 from .od import classification
 from django.contrib.auth.decorators import login_required
@@ -12,7 +11,9 @@ from django.http import HttpResponse
 
 @login_required
 def category(request):
-    return render(request, 'category.html')
+    pht = PhotoModel.objects.all()
+    ctg = Category.objects.all()
+    return render(request, 'category.html', {'pht':pht, 'ctg':ctg})
 
 
 @login_required
@@ -26,8 +27,6 @@ def fileUpload(request):
         photo.save()
 
         categories = classification(photo.img)[1]
-        metadata = get_photo_info(photo.img)
-        print(metadata)
         # ctg.name = categories
         # ctg.save()
         
@@ -105,8 +104,9 @@ def favorit_view(request):
         return redirect('/sign-in')
 
 
-def get_photo_info() :
-        image = Image.open(" ") #이미지 파일 경로 또는 주소 입력
+def get_photo_info(img_name) :
+        image_path = "media\\" + str(img_name)
+        image = Image.open(image_path) #이미지 파일 경로 또는 주소 입력
         info = image._getexif()
         image.close()
 
