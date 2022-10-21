@@ -53,10 +53,12 @@
 <body>
 
 <div class="image_container">
-    {% for i in trash %}
+    {% for j in trash_img %}
 
-        {% if i.trash %}
-                <img src="{{ i.trash.url }}" style="height : 150px; margin-top : 30px; cursor: pointer;">
+        {% if j.trash_img %}
+            <a method="GET" href="/restore/{{ j.id }}">
+                <img src="{{ j.trash_img.url }}" style="height : 150px; margin-top : 30px; cursor: pointer;">
+            </a>
         {% endif %}
 
     {% endfor %}
