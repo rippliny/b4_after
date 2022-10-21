@@ -9,7 +9,8 @@ class Category(models.Model):
     
     def __str__(self):
         return self.name
-        
+
+
 class PhotoModel(models.Model):
     class Meta:
         db_table = "photo"
@@ -24,12 +25,14 @@ class PhotoModel(models.Model):
     def __str__(self):
         return self.img.url
 
+
 class Trash(models.Model):
     class Meta:
         db_table = "trash"
 
     user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
-    trash = models.ImageField(upload_to='trash/', null=True)
+    trash_img = models.ImageField(upload_to='trash/', null=True)
+
 
 class Favorit(models.Model):
     class Meta:

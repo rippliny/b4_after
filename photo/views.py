@@ -66,7 +66,7 @@ def img_info(request, id):
         photo = PhotoModel.objects.get(id=id)
         trash = Trash()
         trash.user = request.user
-        trash.trash = photo.img
+        trash.trash_img = photo.img
         trash.save()
         
         photo.delete()
@@ -79,9 +79,10 @@ def trash(request):
     user = request.user.is_authenticated
     trash = Trash.objects.all()
     if user:
-        return render(request, 'trash.html', {'trash' : trash })
+        return render(request, 'trash.html', {'trash_img' : trash})
     else:
         return redirect('/sign-in')
+
 
 # 즐겨찾기
 @login_required
@@ -97,6 +98,7 @@ def favorit(request, id):
       
         return redirect('/')
 
+
 # 즐겨찾기 페이지
 @login_required
 def favorit_view(request):
@@ -108,7 +110,55 @@ def favorit_view(request):
         return redirect('/sign-in')
 
 
-# def get_photo_info(request, img_name) :
+@login_required
+def favorit_info_view(request, id):
+    if request.method == 'GET':
+        favorit = Favorit.objects.get(id=id)
+        favorit_image = Favorit.objects.all()
+        context = {
+            'favorit': favorit,
+            'favorit_img': favorit_image,
+            'id': id,
+        }
+        return render(request, 'favorites_info.html', context)
+
+    elif request.method == 'POST':
+        favorit = Favorit.objects.get(id=id)
+        photo = PhotoModel()
+        photo.user = request.user
+        photo.img = favorit.favorit
+        photo.save()
+        
+        favorit.delete()
+      
+        return redirect('/favorit')
+
+
+@login_required
+def restore(request, id):
+    if request.method == 'GET':
+        trash_photo = Trash.objects.get(id=id)
+        trash_image = Trash.objects.all()
+        context = {
+            'trash': trash_photo,
+            'trash_img': trash_image,
+            'id': id,
+        }
+        return render(request, 'restore.html', context)
+
+    elif request.method == 'POST':
+        trash = Trash.objects.get(id=id)
+        photo = PhotoModel()
+        photo.user = request.user
+        photo.img = trash.trash_img
+        photo.save()
+        
+        trash.delete()
+      
+        return redirect('/trash')
+
+# 메타데이터
+# def get_photo_info(img_name) :
 #         image_path = "media\\" + str(img_name)
 #         image = Image.open(image_path) #이미지 파일 경로 또는 주소 입력
 #         info = image._getexif()
