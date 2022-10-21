@@ -24,7 +24,7 @@
     .input-form {
       max-width: 680px;
 
-      margin-top: 80px;
+      margin-top: 50px;
       padding: 32px;
 
       background: #fff;
@@ -42,9 +42,9 @@
   <div class="container">
     <div class="input-form-backgroud row">
       <div class="input-form col-md-12 mx-auto">
-        <h4 class="mb-3"><span style=color:blue>B</span><span style=color:red>4</span><span style=color:orange>
-            A</span><span style=color:blue>f</span><span style=color:green>t</span><span style=color:red>e</span><span
-            style=color:orange>r</span> 계정 만들기</h4>
+        <h4 class="mb-3"><span style=color:dodgerblue>B</span><span style=color:crimson>4</span><span style=color:dodgerblue>
+            A</span><span style=color:crimson>f</span><span style=color:orange>t</span><span style=color:forestgreen>e</span><span
+            style=color:dodgerblue>r</span> 계정 만들기</h4>
         <form class="form-area" method="post" action="/sign-up/" novalidate>
           {% csrf_token %}
           <div class="row">
@@ -92,10 +92,11 @@
             </div>
           </div>
           <div class="custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" id="aggrement" required>
+            <input type="checkbox" class="custom-control-input" id="agreement" required>
             <label class="custom-control-label" for="aggrement">비밀번호 표시</label>
           </div>
           {% if error %}
+              <p></p>
               <div class="alert alert-danger" role="alert">
                   {{ error }}
               </div>
