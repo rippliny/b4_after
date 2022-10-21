@@ -29,18 +29,18 @@
 </style>
 
 <body>
-    {% for j in trash_img %}
+    {% for j in favorit_img %}
         {% if j.id == id %}
             <div style="padding:10px;"></div>
             <div class="btn">
-                <form action="{% url 'photo:trash_restore' trash.id %}" method="POST">
+                <form action="{% url 'photo:favorit_info_view' favorit.id %}" method="POST">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-dark">
-                        <span class="material-icons">restore_from_trash</span>
+                        <span class="material-icons">star_half</span>
                         </button>
                 </form>
                 <div>
-                    <button onclick="location.href='/trash'" class="btn btn-dark">
+                    <button onclick="location.href='/favorit'" class="btn btn-dark">
                         <span class="material-icons">arrow_back</span>
                         </button>
                 </div>
@@ -51,7 +51,7 @@
                 </div>
             </div>
             <div>
-                <img src="{% get_media_prefix %}{{ j.trash_img }}"
+                <img src="{% get_media_prefix %}{{ j.favorit }}"
                     style="display: block; margin-top: 20px; margin-left: auto; margin-right: auto; height: 100%; width:90%;">
             </div>
         {% endif %}
