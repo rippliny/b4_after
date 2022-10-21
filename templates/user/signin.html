@@ -30,7 +30,8 @@
 
     .box {
         position: absolute;
-        top: 50%;
+        margin-top: 320px;
+        /* top: 50%; */
         left: 50%;
         transform: translate(-50%, -50%);
         width: 30rem;
@@ -77,7 +78,7 @@
         padding: 1.3rem 10px;
         font-size: 1rem;
         letter-spacing: 0.062rem;
-        margin-bottom: 1.875rem;
+        margin-bottom: 1.50rem;
         border: 1px solid #ccc;
         background: transparent;
         border-radius: 4px;
@@ -156,9 +157,10 @@
                     {{ error }}
                 </div>
             {% endif %}
-            <a href="/sign-up">계정 만들기</a><button style="float:right" type="submit"
-                class="btn btn-primary btn-lg btn-block">로그인</button>
-
+            <div style="margin-top:25px">
+                <a href="/sign-up">계정 만들기</a><button style="float:right" type="submit"
+                    class="btn btn-primary btn-lg btn-block">로그인</button>
+            </div>
         </form>
     </div>
     
