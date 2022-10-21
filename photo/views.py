@@ -94,7 +94,6 @@ def favorit(request, id):
         favorit.favorit = photo.img
         favorit.save()
             
-        photo.delete()
       
         return redirect('/')
 
@@ -126,7 +125,6 @@ def favorit_info_view(request, id):
         favorit = Favorit.objects.get(id=id)
         photo = PhotoModel()
         photo.user = request.user
-        photo.img = favorit.favorit
         photo.save()
         
         favorit.delete()
@@ -157,6 +155,8 @@ def restore(request, id):
       
         return redirect('/trash')
 
+
+
 # 메타데이터
 # def get_photo_info(img_name) :
 #         image_path = "media\\" + str(img_name)
@@ -170,8 +170,8 @@ def restore(request, id):
 #             decoded = TAGS.get(tag, tag)
 #             taglabel[decoded] = value
 
-#         # print(taglabel['DateTimeOriginal'])  # 촬영 시각
-#         # print(taglabel['Make'], taglabel['Model'])  # 카메라 기종
+#         print(taglabel['DateTimeOriginal'])  # 촬영 시각
+#         print(taglabel['Make'], taglabel['Model'])  # 카메라 기종
 
 #         # 촬영 위치
 #         exifGPS = taglabel['GPSInfo']
@@ -203,52 +203,3 @@ def restore(request, id):
 #         Lon = (lonDeg + (lonMin + lonSec / 60.0) / 60.0)
 #         # 동경, 서경인지를 판단, 서경일 경우 -로 변경
 #         if exifGPS[3] == 'W': Lon = Lon * -1
-        
-#         DateTime = taglabel['DateTimeOriginal']
-#         ExifImageHeight = taglabel['ExifImageHeight']
-#         ExifImageWidth = taglabel['ExifImageWidth']
-#         ShutterSpeedValue = taglabel['ShutterSpeedValue']
-#         FNumber = taglabel['FNumber']
-#         Make = taglabel['Make']
-#         Model = taglabel['Model']
-#         LensModel = taglabel['LensModel']
-
-#         context = {
-#             'DateTime': DateTime,
-#             'ExifImageHeight': ExifImageHeight,
-#             'ExifImageWidth': ExifImageWidth,
-#             'ShutterSpeedValue': ShutterSpeedValue,
-#             'FNumber': FNumber,
-#             'Make': Make,
-#             'Model': Model,
-#             'LensModel': LensModel,
-#             'Lat' : Lat,
-#             'Lon' : Lon,
-#         }
-
-#         # return render(request, img_info.html, context)
-#         print(context)
-
-# # 즐겨찾기
-# @login_required
-# def favorites(request, id):
-#     me = request.user
-#     click_user = PhotoModel.objects.get(id=id)
-#     if me in click_user.favorites.all():
-#         click_user.favorites.remove(request.user)
-#     else:
-#         click_user.favorites.add(request.user)
-#     return redirect('/')
-
-# # 즐겨찾기 페이지
-# @login_required
-# def favorites_view(request):
-#     me = request.user
-#     photo = PhotoModel.objects.all().first()
-#     favorit_list = photo.favorites.all()
-#     favorit = photo.favorites.filter(username=me)
-    
-#     if me:
-#         return render(request, 'favorites.html', {'photo':photo, 'favorit_list':favorit_list, 'favorit':favorit})
-#     else:
-#         return redirect('/')
