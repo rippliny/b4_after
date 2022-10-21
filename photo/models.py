@@ -9,7 +9,8 @@ class Category(models.Model):
     
     def __str__(self):
         return self.name
-        
+
+
 class PhotoModel(models.Model):
     class Meta:
         db_table = "photo"
@@ -19,15 +20,24 @@ class PhotoModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     categories = models.ManyToManyField(Category,default='')
-    favorites = models.ManyToManyField(UserModel, related_name='favorites' ,blank=True)
 
 
     def __str__(self):
         return self.img.url
+
 
 class Trash(models.Model):
     class Meta:
         db_table = "trash"
 
     user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
-    trash = models.ImageField(upload_to='trash/', null=True)
+    trash_img = models.ImageField(upload_to='trash/', null=True)
+
+
+class Favorit(models.Model):
+    class Meta:
+        db_table = "favorit"
+
+    user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+    favorit = models.ImageField(upload_to='favorit/', null=True)
+    
