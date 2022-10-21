@@ -46,16 +46,24 @@
 
 
 <!-- HORIZONTAL SCROLLING  -->
-{% for c in ctg.all %}
 
+<div>
+    <p class="fs-2" style="margin-left: 100px; margin-top: 20px;">탐색</p>
+</div>
+
+{% for c in ctg.all %}
+    {% for p in pht.all %}
+    {% for category in p.categories.all %}
+    {% if category.id == c.id %}
 <a name="horizontal-scrolling"></a>
 <h5 style="margin: 10px 0px 0px 50px;">{{c.name}}</h5>
 <div id="scroll">
-    {% for p in pht %}
-        {% if p.categories == 1 %}
+
             <img src="{{ p.img.url }}" style="height : 150px; margin-top : 30px;">
-        {% endif %}
-    {% endfor %}
+            {% else %}
+            {% endif %}
+            {% endfor %}
+            {% endfor %}
 </div>
 
 {% endfor %}
