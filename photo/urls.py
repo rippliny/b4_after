@@ -11,4 +11,5 @@ urlpatterns = [
     path('img_info/<int:id>/favorit', views.favorit, name='favorit'),
     path('trash/', views.trash, name='trash'),
     path('favorit/', views.favorit_view, name='favorit_view'),
+    path('category/', views.category, name='category'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
