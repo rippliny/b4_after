@@ -23,6 +23,8 @@
 	display: flex;
     justify-content: center;
     margin: 5px;
+    margin-left: 15px;
+    margin-right: 15px;
     }
 </style>
 
@@ -35,14 +37,23 @@
                 <div>
                     <form action="{% url 'photo:favorit' photo.id %}" method="POST">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-dark">즐겨찾기</button>
+                        <button type="submit" class="btn btn-dark">
+                            <span class="material-icons">star_border</span>
+                        </button>
                     </form>
                 </div>
                 <div>
                     <form action="{% url 'photo:delete' photo.id %}" method="POST">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-dark">삭제하기</button>
+                        <button type="submit" class="btn btn-dark">
+                            <span class="material-icons">delete_outline</span>
+                        </button>
                     </form>
+                </div>
+                <div>
+                        <button onclick="location.href='/'" class="btn btn-dark">
+                            <span class="material-icons">arrow_back</span>
+                        </button>
                 </div>
             </div>
             <div>
