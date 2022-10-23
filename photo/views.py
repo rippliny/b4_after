@@ -30,6 +30,10 @@ def fileUpload(request):
         # ctg.name = categories
         # ctg.save()
         
+        # metadata = get_photo_info(photo.img)
+        
+        # print(metadata)
+        
         categories = Category.objects.filter(name__in=categories)
         if categories:
             photo.categories.add(*categories)
@@ -90,7 +94,6 @@ def favorit(request, id):
         favorit.favorit = photo.img
         favorit.save()
             
-        photo.delete()
       
         return redirect('/')
 
@@ -122,7 +125,6 @@ def favorit_info_view(request, id):
         favorit = Favorit.objects.get(id=id)
         photo = PhotoModel()
         photo.user = request.user
-        photo.img = favorit.favorit
         photo.save()
         
         favorit.delete()
