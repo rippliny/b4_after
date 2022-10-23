@@ -18,6 +18,15 @@
     - 속성별 분류 : 전다솔
 - 팀원 모두 한 개 이상의 Back-End 기능 구현
 
+# API 기능 명세
+
+## DATABASE 구조
+![B4_After (2)](https://user-images.githubusercontent.com/112548916/197181559-d42cc2b3-29fe-44c3-88cf-3be6eb3e0ebb.png)
+
+## APP별 기능 구조
+<img width="542" alt="화면 캡처 2022-10-21 200520" src="https://user-images.githubusercontent.com/112548916/197182059-e4c48e4d-c9d6-47cd-b6df-726b6ce639a4.png">
+<img width="602" alt="화면 캡처 2022-10-21 200747" src="https://user-images.githubusercontent.com/112548916/197182302-d4a46573-108f-4a5e-8cfc-e89ba0622166.png">
+
 # 주요 구현 기능
 
 ## Wireframe
